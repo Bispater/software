@@ -1,0 +1,113 @@
+<div class="row initial">
+    <div class="col-1">
+        <div class="row">
+            <div class="col">
+                <h6>ESCOGE MESA</h6>
+            </div>
+            <div class="col">
+                <form class="example-form" *ngIf="showPlacesOption">
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <input type="text" placeholder="Escoge Mesa" aria-label="Ingresa" matInput
+                            [formControl]="myControl" [matAutocomplete]="auto">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                {{option}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<h6>RESUMEN GENERAL DE ACCESORIOS</h6>
+<div class="card card-adjust">
+    <div class="row">
+        <div class="col-1">
+            <h6><b>EXHIBIDO:</b></h6>
+            <h6><b>0/60</b></h6>
+            <mat-progress-bar mode="determinate" value="10"></mat-progress-bar>
+        </div>
+        <div class="col-2">
+            <h6><b>TARJETÓN:</b></h6>
+            <h6><b>0/60</b></h6>
+            <mat-progress-bar mode="determinate" value="10"></mat-progress-bar>
+        </div>
+      </div>
+</div>
+<br>
+<h6>RESUMEN ACCESORIOS / TIENDA PLAZA VESPUCIO /  WEARABLES</h6>
+<!-- <div class="row">
+    <div class="col-1">
+        <div class="card">
+            <div class="row">
+                <h6><b>EXHIBIDO:</b></h6>
+                <h6><b>0/15</b></h6>
+                <mat-progress-bar mode="determinate" value="0"></mat-progress-bar>
+            </div>
+            <div class="row">
+                <h6><b>EXHIBIDO:</b></h6>
+                <h6><b>0/15</b></h6>
+                <mat-progress-bar mode="determinate" value="0"></mat-progress-bar>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <h6><b>TARJETÓN:</b></h6>
+        <h6><b>0/60</b></h6>
+        <mat-progress-bar mode="determinate" value="10"></mat-progress-bar>
+    </div>
+</div> -->
+
+<div class="card resume-card-adjust">
+    <div class="col-1">
+        <div class="wrapper" style="margin-top: 150px;">
+            <h6><b>EXHIBIDO:</b></h6>
+            <h6><b>0/15</b></h6>
+            <mat-progress-bar mode="determinate" value="1"></mat-progress-bar>
+            <h6><b>TARJETÓN:</b></h6>
+            <h6><b>0/15</b></h6>
+            <mat-progress-bar mode="determinate" value="1"></mat-progress-bar>
+            <div class="row" style="display: flex;">
+                <h6><b>Total</b></h6>
+                <h6><b>67%</b></h6>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="row" style="display: flex;">
+            <div class="container">
+                <div class="point-container">
+                  <div class="point black-color"></div>
+                  <div class="text">15/5</div>
+                </div>
+                <div class="point-container">
+                  <div class="point green"></div>
+                  <div class="text">0/5</div>
+                </div>
+                <div class="point-container">
+                  <div class="point yellow"></div>
+                  <div class="text">0/5</div>
+                </div>
+                <div class="point-container">
+                  <div class="point red"></div>
+                  <div class="text">0/5</div>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+
+<h6>DOCUMENTACIÓN Y EVIDENCIAS</h6>
+<div class="card">
+    <div class="row" style="display: flex; padding: 20px;">
+        <img style="cursor: pointer; height: 100px; width: 150px; margin-left: 0px; border-radius: 10px;" src="./../../../../assets/images/11.jpeg">
+        <img style="cursor: pointer; height: 100px; width: 150px; margin-left: 15px; border-radius: 10px;" src="./../../../../assets/images/1112.jpeg">
+        <button mat-stroked-button style="width: 150px; margin-left: 15px; border-radius: 10px; border-style: dashed;">
+            <h5 style="color: rgb(126, 126, 130)">+</h5>
+        </button>
+    </div>
+</div>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar">
+
+<app-generic-table></app-generic-table>

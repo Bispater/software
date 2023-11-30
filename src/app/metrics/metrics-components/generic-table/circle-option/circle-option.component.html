@@ -1,0 +1,13 @@
+<mat-slide-toggle color="primary" [checked]="checked" (change)="onToggleChange($event)"></mat-slide-toggle>
+<span *ngIf="!showColor" class="circle" [ngStyle]="{'background-color': '#55CB76'}" ></span>
+<span *ngIf="showColor" class="circle" [ngStyle]="{'background-color': defaultColor}" [matMenuTriggerFor]="menu"></span>
+<mat-menu #menu="matMenu">
+    <ng-container *ngFor="let option of options">
+        <button mat-menu-item (click)="selectedColor(option.style)">
+            <span class="circle"
+                [ngStyle]="{'background-color': option.style === 'blue_light' ? '#3AB4E8' : option.style}"></span>
+            <span class="option-name" [ngStyle]="{'padding-left': '10px', 'font-weight': 'bold'}"
+                matTooltip="{{ option.name }}">{{ option.name }}</span>
+        </button>
+    </ng-container>
+</mat-menu>

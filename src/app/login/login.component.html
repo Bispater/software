@@ -1,0 +1,36 @@
+<div class="login">
+    <div class="login-form">
+    	<form [formGroup]="aFormGroup" name="loginform" id="loginform" (ngSubmit)="login()" action="" method="post" ngNativeValidate>
+			<img src="../assets/images/entel-logo.svg" class="login-logo">
+			<label for="username" class="select-title login-white">Usuario</label>
+			<input type="text" formControlName="username" id="username" class="left-login" placeholder="Usuario">
+
+			<label for="password" class="select-title top login-white">Contraseña</label>
+			<input formControlName="password" class="left-login" type="password" id="password" placeholder="Contraseña" value="" #password required>
+			<div class="recuperarPass">
+				<!-- <a href="javascript:" routerLink="/recuperar">¿Olvidaste tu contraseña?</a> -->
+			</div>
+			<div>
+		      <input formControlName="key" type="hidden" id="key" class="login-input" [(ngModel)]="keyApp" #key required>
+		    </div> <!-- && production === true-->
+			<ngx-recaptcha2  *ngIf="true" #captchaElem
+			            [siteKey]="siteKey"
+			            (expire)="handleExpire()"
+			            (success)="handleSuccess($event)"
+			            [hl]="'cl'"
+			            id="captcha"
+			            formControlName="recaptcha" class="center-all">
+			</ngx-recaptcha2>
+			<br>
+			<br>
+			<button [disabled]="!captchaValid && production === true" type="submit" class="login-btn" title="Iniciar Sesión"> Iniciar sesión </button>
+			
+			<!-- <button type="submit" class="login-btn" title="Iniciar Sesión"> Iniciar sesión </button> -->
+			
+		</form>
+		<p class="alert {{statusClass}}">{{statusService}}</p>
+    </div>
+  </div>
+  
+  <div class="login-hero">
+  </div>

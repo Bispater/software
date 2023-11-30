@@ -1,0 +1,27 @@
+<mat-tab-group class="mb-100" id="tab-group">
+    <mat-tab label="equipos más tocados" > 
+        <ng-template  matTabContent>
+            <app-equipments-touched></app-equipments-touched>
+        </ng-template>  
+    </mat-tab>
+    <mat-tab label="tiendas con más interacciones">
+        <ng-template  matTabContent>
+            <app-stores-interactions></app-stores-interactions>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="tiendas con más usuarios únicos">
+        <ng-template  matTabContent>
+            <app-unique-users></app-unique-users>  
+        </ng-template>   
+    </mat-tab>
+    <mat-tab label="Estadísticas por tiendas">
+        <ng-template  matTabContent>
+            <app-statistics-subsidiary></app-statistics-subsidiary>  
+        </ng-template>   
+    </mat-tab>
+    <mat-tab label="Estadísticas por dispositivos">
+        <ng-template  matTabContent>
+            <app-statistics-device></app-statistics-device>  
+        </ng-template>   
+    </mat-tab>
+</mat-tab-group>

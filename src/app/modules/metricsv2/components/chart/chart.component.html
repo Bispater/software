@@ -1,0 +1,121 @@
+<div class="row">
+  <div class="col s12 mb-35 boxChartTexts">
+    <h5>RESULTADOS</h5>
+    <p *ngIf="tabCurrent == 2 || tabCurrent == 1 || tabCurrent == 0" >Canal: <b>
+      
+      <ng-container *ngIf="arrayStringChannel; else all">
+        {{arrayStringChannel}}
+   
+      </ng-container>
+      <ng-template #all>
+        Todos
+      </ng-template>
+
+    </b></p>
+
+    <p *ngIf="tabCurrent == 3 ">Canal: <b>  
+      <ng-container *ngIf="arrayStringChannel; else allarrayStringSubsidiary">
+        {{arrayStringChannel}}
+      </ng-container>
+      <ng-template #allarrayStringSubsidiary>
+        Todos
+      </ng-template>
+    </b></p>
+
+    <p *ngIf="tabCurrent == 4 ">Marca: <b>
+      <ng-container *ngIf="arrayBrandString">
+        {{arrayBrandString}}
+      </ng-container></b></p>
+
+    <p *ngIf="tabCurrent == 4 ">Modelo: <b>  
+      <ng-container *ngIf="arrayModelString">
+        {{arrayModelString}}
+      </ng-container></b></p>
+
+    <p *ngIf="tabCurrent == 2 || tabCurrent == 1 || tabCurrent == 0 || tabCurrent == 3" >Segmento: <b>
+      
+    
+      <ng-container *ngIf="arrayStringSegment; else allSegment">
+        {{arrayStringSegment}}
+   
+      </ng-container>
+      <ng-template #allSegment>
+        Todos
+      </ng-template>
+    </b></p>
+
+
+
+
+   
+    <p *ngIf="tabCurrent == 3 ">Tienda: <b>  
+      <ng-container *ngIf="arrayStringSubsidiary; else all2">
+        {{arrayStringSubsidiary}}
+      </ng-container>
+      <ng-template #all2>
+        Todos
+      </ng-template>
+    </b></p>
+
+   
+
+
+    <p>Fecha: <b>{{date}}</b></p>
+    <p>Total interacciones: <b>{{totalInteracction }} </b></p>
+  </div>
+</div>
+
+<div>
+  
+  <ngx-charts-bar-vertical
+    [scheme]="colorScheme"
+    [results]="single"
+    [gradient]="gradient"
+    [xAxis]="showXAxis"
+    [yAxis]="showYAxis"
+    [legend]="showLegend"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    [rotateXAxisTicks]="false"
+    [xAxisTickFormatting]="percentTickFormatting"
+    [dataLabelFormatting]="formatDataLabel"
+    [barPadding]="33"
+    [showDataLabel]=true
+    [maxXAxisTickLength]=200 
+    (select)="onSelect($event)">
+    <ng-container *ngIf="tabCurrent != 4">
+      <ng-template #tooltipTemplate let-model="model">
+    
+   
+        <ng-container *ngIf="tabCurrent != 4">
+          <p class="p-10 pb-0">{{model.label}}: {{model.value}} %  </p>
+        </ng-container>
+        <p class="m-0 pb-20 d-none"># {{ (model.value * totalInteracction) / 100 | number : '0.0-0' }}</p>
+    
+      </ng-template>
+    </ng-container>
+    <ng-container *ngIf="tabCurrent == 4">
+      <ng-template #tooltipTemplate let-model="model">
+        <ng-container *ngIf="model.value != 0">
+          <p class="p-10 pb-0">{{model.label}}: {{model.value}} %  </p>
+          </ng-container>
+        
+   
+     
+          
+     
+        
+    
+      </ng-template>
+    </ng-container>
+  
+  
+  </ngx-charts-bar-vertical>
+
+ 
+</div><!--
+  [maxXAxisTickLength]=200 
+    [yAxisTickFormatting]="yAxisTickFormatting"    [yScaleMax]="100" 
+    [yScaleMin]="30"-->

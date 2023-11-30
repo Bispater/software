@@ -1,0 +1,12 @@
+<div 
+class="thumbnails" 
+*ngIf="form_ads.template" 
+[innerHTML]="form_ads.template.css_thumbnails + htmlTemp | safe: 'html'"
+>
+</div>
+
+<!-- <small matTooltip="Video Preview"  *ngIf="form_ads.item_type.name == 'video'" (click)="openVideo(item.video)"> -->
+<div *ngIf="form_ads.item_type.name == 'video'">
+    <img  src="../../assets/images/video-1.jpg" [className]="(form_ads.is_active) ? 'img-playlist' : 'img-playlist opacity'">
+    <!-- <span class="list-name" >{{ form_ads.name }}</span> -->
+</div>

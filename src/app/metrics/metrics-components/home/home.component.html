@@ -1,0 +1,63 @@
+<div class="row initial">
+    <div class="col-1">
+        <div class="row">
+            <div class="col">
+                <h6>ESCOGE MESA</h6>
+            </div>
+            <div class="col">
+                <form class="example-form" *ngIf="showPlacesOption">
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <input type="text" placeholder="Escoge Mesa" aria-label="Ingresa" matInput
+                            [formControl]="myControl" [matAutocomplete]="auto">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                {{option}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<h6 class="title">RESUMEN GENERAL PDV / TIENDA</h6>
+<div class="card card-adjust">
+    <div class="row">
+        <div class="col-1">
+            <h6><b>CUMPLIMIENTO:</b></h6>
+            <h6><b>67%</b></h6>
+            <mat-progress-bar mode="determinate" value="67"></mat-progress-bar>
+        </div>
+        <div class="col-2">
+            <h6><b>NOTA PDV:</b></h6>
+            <h6><b>21%</b></h6>
+            <mat-progress-bar mode="determinate" value="21"></mat-progress-bar>
+        </div>
+      </div>
+</div>
+<br>
+<h6>RESUMEN HOGAR / TIENDA PLAZA VESPUCIO</h6>
+
+
+<div class="card resume-card-adjust">
+
+</div>
+<h6>DOCUMENTACIÓN Y EVIDENCIAS</h6>
+<div class="card">
+    <div class="row" style="display: flex; padding: 20px;">
+        <img style="cursor: pointer; height: 100px; width: 150px; margin-left: 0px; border-radius: 10px;" src="./../../../../assets/images/11.jpeg">
+        <img style="cursor: pointer; height: 100px; width: 150px; margin-left: 15px; border-radius: 10px;" src="./../../../../assets/images/1112.jpeg">
+        <button mat-stroked-button style="width: 150px; margin-left: 15px; border-radius: 10px; border-style: dashed;">
+            <h5 style="color: rgb(126, 126, 130)">+</h5>
+        </button>
+    </div>
+</div>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar">
+
+<app-generic-table></app-generic-table>
+<!-- <div class="div-search">
+    <input class="shadows"
+    name="sea-rch" matInput (keyup)="applyFilter($event)" 
+    #input
+    type="text" placeholder="   ¿Buscas algo adicional?">
+</div> -->

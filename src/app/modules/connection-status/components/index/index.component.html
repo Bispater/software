@@ -1,0 +1,935 @@
+<h1 class="title-state">Estadoa de conexión</h1>
+
+<div class="row">
+    <!--widget status-->
+    <div class="col legend-update">
+        <p>ACTUALIZADO A LAS {{utils.getHourFormatDevice(update_date)}} HR</p>
+    </div>
+    <div class="col s12 mt-25 widgetStatus">
+        <mat-card>
+            <div class="row m-0">
+                <div class="boxDevices">
+                    <div class="carousel carousel-slider carousel-slider-top carousel_main">
+                        <ng-container *ngFor="let channel of list_channel; let i = index">
+                            <div class="carousel-item" href="#one!" *ngIf="(channel.online+channel.offline) > 0">
+                                <div class="row">
+                                    <div class="col s4">
+                                        <h6>Estatus global: {{channel.channel.name}}</h6>
+                                    </div>
+                                    <div class="col s2 text-rigth-device">
+                                        <p class="ml-20 lh-60 ">Total tiendas: <span
+                                                class="font-weight-bold">{{channel.total_subsidiary}}</span></p>
+                                    </div>
+                                    <div class="col s3 text-left-device">
+                                        <p class="ml-20 lh-60 ">Total dispositivos: <span
+                                                class="font-weight-bold">{{channel.total_devices}}</span></p>
+                                    </div>
+                                    <div class="col s2 align-left" (click)="$event.stopPropagation();">
+                                        <button mat-stroked-button class="browser-default mt-15 right btn-view"
+                                            (click)="openDialog(template, null, channel.channel.id)">VER
+                                            SEGMENTOS</button>
+                                    </div>
+                                    <div class="col s1 btn-align-excel">
+                                        <button mat-mini-fab color="primary" matTooltip="Detalle Tiendas"
+                                            (click)="getDataDeviceExcelAsync(channel)" aria-label="Descargar Excel">
+                                            <mat-icon>file_download</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row modalChart">
+                                    <div class="col s12 m6 chart p-10">
+                                        <p class="font-weight-light w-100 align-center align-bottom title-chart">
+                                            <i *ngIf="(channel.alert_connected)" class="material-icons">
+                                                warning
+                                            </i>
+                                            <i *ngIf="!channel.alert_connected" class="material-icons icon-opacity">
+                                                warning
+                                            </i>
+                                            Conexión WiFi
+                                        </p>
+
+
+                                        <div class="boxChartB">
+                                            <ngx-charts-bar-vertical [tooltipDisabled]='false' [animations]='false'
+                                                [showDataLabel]="false" [view]="view" [scheme]="colorScheme"
+                                                [results]="channel.conexion" [gradient]="gradient" [barPadding]="100"
+                                                [xAxis]="showXAxis" [yScaleMax]="100" [yScaleMin]="0"
+                                                [yAxis]="showYAxis" [legend]="showLegend" [xAxisLabel]="xAxisLabel"
+                                                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                                                <ng-template #tooltipTemplate let-model="model" class="tooltip">
+                                                    <div class="tt p-10">
+                                                        {{ model.value }}% {{ model.name }}
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-charts-bar-vertical>
+                                        </div>
+
+                                        <div class="texts d-none">
+                                            <p class="mb-10">{{channel.online}} dispositivos conectados</p>
+                                            <p>{{channel.offline}} dispositivos desconectados</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col s12 m6 chart p-10 line-status">
+                                        <p class="font-weight-light w-100 align-center align-bottom title-chart">
+                                            <i *ngIf="(channel.alert_power_device)" class="material-icons">
+                                                warning
+                                            </i>
+                                            <i *ngIf="!channel.alert_power_device" class="material-icons icon-opacity">
+                                                warning
+                                            </i>
+                                            Conectado a energía
+                                        </p>
+                                        <div class="boxChartB">
+                                            <ngx-charts-bar-vertical [animations]='true' [showDataLabel]="false"
+                                                [view]="view" [yScaleMax]="100" [yScaleMin]="0" [scheme]="colorScheme"
+                                                [results]="channel.power" [gradient]="gradient" [barPadding]="100"
+                                                [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                                (select)="onSelect($event)">
+                                                <ng-template #tooltipTemplate let-model="model" class="tooltip">
+                                                    <div class="tt p-10">
+                                                        {{ model.value }}% {{ model.name }}
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-charts-bar-vertical>
+
+                                        </div>
+                                        <div class="texts d-none">
+                                            <p class="mb-10">{{channel.connected_power}} dispositivos conectados</p>
+                                            <p>{{channel.disconnect_power}} dispositivos desconectados</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </div>
+                    <div class="boxDirectionCarousel">
+                        <div class="boxArrow left left-top boxArrow_main">
+                            <i class="material-icons" (click)="nextCarousel($event.target)">
+                                keyboard_arrow_left
+                            </i>
+                        </div>
+                        <div class="boxArrow right right-top boxArrow_main">
+                            <i class="material-icons" (click)="nextCarousel($event)">
+                                keyboard_arrow_right
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+    <!--/widget status-->
+
+    <!--boxFilters-->
+    <div class="col s12 mt-25 widgetFilters">
+        <mat-card>
+            <!--<button mat-button (click)="openDialog()">Open dialog</button>-->
+            <h5 class="title-filter">Estatus por segmento y tienda</h5>
+            <!-- <button mat-stroked-button color="primary" (click)="getUpdateAll()" class="text-button-update btn-all-update">ACTUALIZAR<p>TODO</p></button> -->
+            <!--buscador-->
+            <form [formGroup]="form_search">
+                <div class="row mt-25">
+                    <div class="col s6 offset-m3 mt-10">
+                        <mat-form-field class="example-full-width w-100" appearance="fill">
+                            <mat-label>Busca una tienda específica</mat-label>
+                            <input type="text" placeholder="" aria-label="Number" matInput formControlName="subsidiary"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                    {{option}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-icon class="search-subsidiary" matSuffix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!--/buscador-->
+
+                <hr class="solid">
+                <!--contenido filters-->
+                <div class="row mt-40">
+                    <div class="col s12 l3">
+                        <div class="boxFilters">
+
+                            <p class="mt-15 title-filter-to">Filtrar por</p>
+                            <!--filter-->
+                            <div class="boxFilter">
+                                <label class="custom">Canal</label>
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Seleccionar</mat-label>
+                                    <mat-select formControlName="channel" multiple>
+                                        <ng-container *ngFor="let channel of list_channel_filter">
+                                            <mat-option *ngIf="channel.name !== ''" [value]="channel.id">
+                                                {{channel.name}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="boxFilter">
+                                <label class="custom">Segmento</label>
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Seleccionar</mat-label>
+                                    <mat-select formControlName="segment" multiple>
+                                        <ng-container *ngFor="let segment of list_segments_filter_tmp">
+                                            <mat-option *ngIf="segment.name !== ''" [value]="segment.id">
+                                                {{segment.name}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <!--/filter-->
+                            <!--filter-->
+                            <div class="boxFilter">
+                                <label class="custom">región</label>
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Seleccionar</mat-label>
+                                    <mat-select formControlName="city" multiple>
+                                        <mat-option *ngFor="let region of list_region" [value]="region.id">
+                                            {{region.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <!--/filter-->
+                            <!--filter-->
+                            <div class="boxFilter">
+                                <label class="custom">conexión wifi</label>
+                                <mat-slide-toggle formControlName="online" [labelPosition]="before" class="w-100">Online
+                                </mat-slide-toggle>
+                                <mat-slide-toggle formControlName="offline" [labelPosition]="before" class="w-100">
+                                    Offline</mat-slide-toggle>
+                            </div>
+                            <!--/filter-->
+                            <!--filter-->
+                            <div class="boxFilter">
+                                <label class="custom">Conectado a energía</label>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="charged" class="w-100">
+                                    Conectados</mat-slide-toggle>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="discharged" class="w-100">
+                                    Desconectados</mat-slide-toggle>
+                            </div>
+                            <!--/filter-->
+                            <!--filter-->
+                            <!-- <div class="boxFilter">
+                                <label  class="custom">tipo dispositivo</label>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="phone" class="w-100">Celular</mat-slide-toggle>
+                                <mat-slide-toggle [labelPosition]="before" disabled formControlName="tablet" class="w-100">Tablet</mat-slide-toggle>
+                            </div> -->
+                            <div class="boxFilter">
+                                <label class="custom">tipo dispositivo</label>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="only_phone" class="w-100">
+                                    Celular</mat-slide-toggle>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="only_tablet" class="w-100">
+                                    Tablet</mat-slide-toggle>
+                            </div>
+
+                            <div class="boxFilter" *ngIf="(is_staff)">
+                                <label class="custom">tipo</label>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="phone" class="w-100">Celular
+                                    Rinno</mat-slide-toggle>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="phone_entel" class="w-100">
+                                    Celular Cliente/Entel</mat-slide-toggle>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="tablet" class="w-100">Tablet
+                                    Rinno</mat-slide-toggle>
+                                <mat-slide-toggle [labelPosition]="before" formControlName="tablet_entel" class="w-100">
+                                    Tablet Cliente/Entel</mat-slide-toggle>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col s12 l9">
+                        <h6 class="title-result">Resultados</h6>
+                        <p *ngIf="!is_filter_region && !is_filter_channel">Se muestran todas las tiendas y todos los
+                            dispositivos.</p>
+                        <!-- <p>Total dispositivos: <span class="font-weight-bold">{{total_device_result}}</span></p> -->
+                        <p class="mt-10">Total tiendas: <span
+                                class="font-weight-bold">{{total_result_subsidiaries}}</span></p>
+                        <p class="mt-10">Total dispositivos: <span class="font-weight-bold">{{total_result}}</span></p>
+                        <!-- (selectionChange)="ChangeOrder(subsidiaries)" -->
+                        
+                            <div style="margin: 10px 0px;"  (click)="$event.stopPropagation();">
+                                <form [formGroup]="form_order" class="">
+                                    <mat-form-field appearance="fill" class="w-300 btn-min float-right">
+                                        <mat-label> Ordenar por:</mat-label>
+                                        <mat-select formControlName="order" (selectionChange)="ChangeOrderAll()"
+                                            >
+                                            <mat-option value="asc">Conexión más antigua
+                                            </mat-option>
+                                            <mat-option value="desc">Conexión más reciente
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </form>
+                            </div>
+
+                        <p class="btn-select">
+                            <!-- <span><strong>Canal seleccionado</strong></span><br> -->
+                            <ng-container *ngIf="(is_filter_channel)">
+                                <button *ngFor="let channel of select_channel" color="channel" class="btn-result"
+                                    mat-raised-button>{{channel.name}} <a class="remove-element"
+                                        (click)="removeChannel(channel.id)">X</a></button>
+                            </ng-container>
+                            <ng-container *ngIf="(is_filter_segment)">
+                                <button *ngFor="let segment of select_segment" color="segment" class="btn-result"
+                                    mat-raised-button>{{segment.name}} <a class="remove-element"
+                                        (click)="removeSegment(segment.id)">X</a></button>
+                            </ng-container>
+                            <ng-container *ngIf="(is_filter_region)">
+                                <button *ngFor="let region of select_region" color="region" class="btn-result"
+                                    mat-raised-button>{{region.name}} <a class="remove-element"
+                                        (click)="removeRegion(region.id)">X</a></button>
+                            </ng-container>
+                        </p>
+                        <ng-container>
+                            <div class="row mt-20" *ngFor="let subsidiaries of subsidiaries_device_tmp; let i = index">
+                                <div class="col s12">
+                                    <mat-accordion #secondAccordion="matAccordion" class="accordionFilter">
+                                        <mat-expansion-panel (opened)="panelOpenState == true" [expanded]="true"
+                                            (closed)="panelOpenState = false">
+                                            <mat-expansion-panel-header>
+                                                <div class="container p-0 w-100">
+                                                    <div class="row title-box-device">
+                                                        <div class="col s5">
+                                                            <h6 class="font-weight-subsidiary">
+                                                                <!-- ({{i}}) -->
+                                                                {{subsidiaries.internal_id}} - {{subsidiaries.name}}
+                                                            </h6>
+                                                            <p class="font-weight-channel">{{subsidiaries.channel_name}}
+                                                                - {{subsidiaries.segment_name}}</p>
+                                                            <p class="font-weight-region mt-5">{{subsidiaries.city}}</p>
+                                                        </div>
+                                                        <div class="col s4 mt-16 font-weight-result">
+                                                            Total dispositivos de la tienda: <span
+                                                                class="font-weight-bold">{{subsidiaries.total_device}}</span>
+                                                            <p class="mt-10">Total resultado: <span
+                                                                    class="font-weight-bold">{{subsidiaries.result_device}}</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col s2" (click)="$event.stopPropagation();">
+                                                            <button mat-stroked-button color="primary"
+                                                                class="browser-default mt-15 right"
+                                                                (click)="modalCustom(1, subsidiaries)">VER
+                                                                DETALLES</button>
+                                                        </div>
+                                                        <!-- <div class="col s1" (click)="$event.stopPropagation();">
+                                                    <button mat-mini-fab color="primary" (click)="getDataDeviceExcelAsync(subsidiaries)" aria-label="Descargar Excel">
+                                                        <mat-icon>file_download</mat-icon>
+                                                    </button>
+                                                </div> -->
+                                                        <!-- <div class="col s2" (click)="$event.stopPropagation();">
+                                                            <form [formGroup]="form_order" class="frm_order">
+                                                                <mat-form-field appearance="fill" class="w-100 btn-min">
+                                                                    <mat-label>Ordenar por</mat-label>
+                                                                    <mat-select formControlName="order"
+                                                                        (selectionChange)="ChangeOrder(subsidiaries)">
+                                                                        <mat-option value="asc">conexión más antigua
+                                                                        </mat-option>
+                                                                        <mat-option value="desc">conexión más reciente
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </form>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </mat-expansion-panel-header>
+                                            <div class="boxDevices" *ngIf="form_search.value.only_phone">
+                                                <h6 class="font-weight-subsidiary">Dispositivo: Smartphone
+                                                    ({{subsidiaries.qty_sp}})
+                                                    <span *ngIf="subsidiaries.qty_sp == 0" class="texts"> - ¡Sin
+                                                        teléfonos asociados!</span>
+                                                </h6>
+                                                <ng-container *ngIf="subsidiaries.device_subsidiaries?.length>0">
+                                                    <div class="boxDirectionCarousel"
+                                                        *ngIf="subsidiaries.device_subsidiaries?.length>1">
+                                                        <div class="boxArrow left"
+                                                            [ngClass]="subsidiaries.id ? 'boxArrow_' + subsidiaries.id:''">
+                                                            <i class="material-icons">
+                                                                keyboard_arrow_left
+                                                            </i>
+                                                        </div>
+                                                        <div class="boxArrow right"
+                                                            [ngClass]="subsidiaries.id ? 'boxArrow_' + subsidiaries.id:''">
+                                                            <i class="material-icons">
+                                                                keyboard_arrow_right
+                                                            </i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="carousel carousel-slider"
+                                                        [ngClass]="subsidiaries.id ? 'carousel_' + subsidiaries.id : '' ">
+                                                        <div class="carousel-item  white-text" href="#one!"
+                                                            *ngFor="let list_device of subsidiaries.device_subsidiaries">
+                                                            <!-- <h1>devices? => {{list_device.length}}</h1> -->
+                                                            <div class="device" *ngFor="let device of list_device">
+                                                                <div class="top">
+                                                                    <div class="row m-0">
+                                                                        <div class="col s6 p-0">
+                                                                            <span
+                                                                                [ngClass]="(device.detail.online) ?  'circle blue' : 'circle red'"
+                                                                                class="circle red"></span>
+                                                                            <span
+                                                                                class="status">{{(device.detail.online)
+                                                                                ?
+                                                                                'Online' : 'Offline'}}</span>
+                                                                        </div>
+                                                                        <div
+                                                                            [ngClass]="(device && device.detail.online) ?  'col s6 p-0 align-right text-right' : 'col s6 p-0 align-right text-right batery-opacity'">
+                                                                            <span class="energy">
+                                                                                <!-- <img *ngIf="(device && device.detail.online && device.detail.battery >= 30 )" src="assets/svg/ic_battery_std.svg">
+                                                                        <img *ngIf="(device && device.detail.online && device.detail.battery < 30 )" src="assets/svg/ic_battery_red.svg">
+                                                                        <img *ngIf="(device && !device.detail.online)" src="assets/svg/ic_battery_silver.svg"> -->
+                                                                                <mat-icon
+                                                                                    *ngIf="device && device.detail.online && device.detail.power_status=='POWER_CONNECTED' && (device.detail.battery >= 31 )"
+                                                                                    color="charged"
+                                                                                    class="material-icons md-icon-18">
+                                                                                    battery_charging_full</mat-icon>
+                                                                                <mat-icon
+                                                                                    *ngIf="device && device.detail.online && device.detail.power_status=='POWER_CONNECTED' && (device.detail.battery >= 11 && device.detail.battery <= 30 )"
+                                                                                    color="alert_charged"
+                                                                                    class="material-icons md-icon-18">
+                                                                                    battery_charging_full</mat-icon>
+                                                                                <mat-icon
+                                                                                    *ngIf="device && device.detail.online && device.detail.power_status=='POWER_CONNECTED' && (device.detail.battery >= 0 && device.detail.battery <= 10 )"
+                                                                                    color="warn"
+                                                                                    class="material-icons md-icon-18">
+                                                                                    battery_charging_full</mat-icon>
+
+                                                                                <mat-icon
+                                                                                    *ngIf="device && device.detail.online && device.detail.power_status=='POWER_DISCONNECTED' && (device.detail.battery >= 31 )"
+                                                                                    color="charged"
+                                                                                    class="material-icons md-icon-18">
+                                                                                    battery_alert</mat-icon>
+                                                                                <mat-icon
+                                                                                    *ngIf="device && device.detail.online && device.detail.power_status=='POWER_DISCONNECTED' && (device.detail.battery >= 11 && device.detail.battery <= 30 )"
+                                                                                    color="alert_charged"
+                                                                                    class="material-icons md-icon-18">
+                                                                                    battery_alert</mat-icon>
+                                                                                <mat-icon
+                                                                                    *ngIf="device && device.detail.online && device.detail.power_status=='POWER_DISCONNECTED' && (device.detail.battery >= 0 && device.detail.battery <= 10 )"
+                                                                                    color="warn"
+                                                                                    class="material-icons md-icon-18">
+                                                                                    battery_alert</mat-icon>
+
+                                                                                <mat-icon
+                                                                                    *ngIf="(device && !device.detail.online)"
+                                                                                    class="material-icons md-icon-18">
+                                                                                    battery_std</mat-icon>
+                                                                            </span>
+                                                                            {{device ? device.detail.battery : ''}}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="brand">{{device && device.device_type &&
+                                                                    device.device_type.name ? device.device_type.name :
+                                                                    '&nbsp;'}} {{device && device.device_name_brand ?
+                                                                    device.device_name_brand.substr(0, 8) : '&nbsp;'}}
+                                                                </div>
+                                                                <div class="model">{{device && device.model &&
+                                                                    device.model.name ? device.model.name.substr(0, 15)
+                                                                    :
+                                                                    '&nbsp;'}}</div>
+                                                                <div class="screenshot">
+                                                                    <img src="{{ !device.detail.online ? 'assets/img/device_default.png' : (device.device_type && device.detail.screenshot && device.detail.screenshot.substr(0, 5)=='https' ? device.detail.screenshot : 'data:image/jpeg;base64,'+device.detail.screenshot) }}"
+                                                                        onerror="this.onerror=null;this.src='assets/img/image_default.png';"
+                                                                        fallback="assets/img/image_default.png"
+                                                                        width="134" height="229">
+                                                                </div>
+                                                                <p class="p-internal">{{device.internal_code}}</p>
+                                                                <div *ngIf="(device.detail.online)" class="boxButton">
+                                                                    <button mat-stroked-button color="primary"
+                                                                        (click)="getUpdateDevice(device)"
+                                                                        class="text-button-update mt-15 mb-10">ACTUALIZAR
+                                                                        <p>
+                                                                            SCREENSHOT</p>
+                                                                    </button>
+                                                                </div>
+                                                                <div *ngIf="(!device.detail.online)">
+                                                                    <p class="texts">Últ. conexión</p>
+                                                                    <p class="texts">
+                                                                        {{utils.getDateFormatDevice(device.detail.modified)}}
+                                                                        a las
+                                                                        {{utils.getHourFormatDevice(device.detail.modified)}}
+                                                                    </p>
+                                                                    <p class="texts texts-bottom">Hace
+                                                                        {{utils.calculateDays(device.detail.modified)}}
+                                                                        <button (click)="getUpdateDevice(device)"
+                                                                            color="primary" mat-icon-button
+                                                                            aria-label="ACTUALIZAR SCREENSHOT">
+                                                                            <mat-icon class="material-icons md-18">
+                                                                                refresh
+                                                                            </mat-icon>
+                                                                        </button>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container *ngIf="subsidiaries.device_subsidiaries?.length==0 && form_search.value.only_phone">
+                                                    <div style="height:25px"></div>
+                                                </ng-container>
+
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                    <mat-accordion #secondAccordion="matAccordion" class="accordionFilter" *ngIf="form_search.value.only_tablet">
+                                        <mat-expansion-panel (opened)="panelOpenState == true" [expanded]="!form_search.value.only_phone && form_search.value.only_tablet"
+                                            (closed)="panelOpenState = true">
+                                            <mat-expansion-panel-header class="title-box-tablet">
+                                                <div class="container p-0 w-100">
+                                                    <div class="row title-box-device">
+                                                        <div class="col s10">
+                                                            <h6 class="font-weight-subsidiary">Dispositivo: Tablet
+                                                                ({{subsidiaries.qty_tb}}) <span
+                                                                    *ngIf="subsidiaries.qty_tb == 0" class="texts"> -
+                                                                    ¡Sin tablets asociadas!</span></h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </mat-expansion-panel-header>
+                                            <div class="boxDevices" *ngIf="subsidiaries.device_tablet?.length > 0">
+                                                <div class="boxDirectionCarousel"
+                                                    *ngIf="subsidiaries.device_tablet?.length > 1">
+                                                    <div class="boxArrow left"
+                                                        [ngClass]="subsidiaries.id ? 'boxArrow_' + subsidiaries.id:''">
+                                                        <i class="material-icons">
+                                                            keyboard_arrow_left
+                                                        </i>
+                                                    </div>
+                                                    <div class="boxArrow right"
+                                                        [ngClass]="subsidiaries.id ? 'boxArrow_' + subsidiaries.id:''">
+                                                        <i class="material-icons">
+                                                            keyboard_arrow_right
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                                <div class="carousel carousel-slider" [ngClass]="subsidiaries.id ? 'carousel_' + subsidiaries.id : '' ">
+                                                    <div class="carousel-item  white-text" href="#one!"
+                                                        *ngFor="let list_device of subsidiaries.device_tablet">
+                                                        <div class="device" *ngFor="let device of list_device">
+                                                            <div class="top">
+                                                                <div class="row m-0">
+                                                                    <div class="col s6 p-0">
+                                                                        <span
+                                                                            [ngClass]="(device.detail.online) ?  'circle blue' : 'circle red'"
+                                                                            class="circle red"></span>
+                                                                        <span class="status">{{(device.detail.online) ?
+                                                                            'Online' : 'Offline'}}</span>
+                                                                    </div>
+                                                                    <div
+                                                                        [ngClass]="(device && device.detail.online) ?  'col s6 p-0 align-right text-right' : 'col s6 p-0 align-right text-right batery-opacity'">
+                                                                        <span class="energy">
+                                                                            <!-- <img *ngIf="(device && device.detail.online && device.detail.battery >= 30 )" src="assets/svg/ic_battery_std.svg">
+                                                                        <img *ngIf="(device && device.detail.online && device.detail.battery < 30 )" src="assets/svg/ic_battery_red.svg">
+                                                                        <img *ngIf="(device && !device.detail.online)" src="assets/svg/ic_battery_silver.svg"> -->
+                                                                            <mat-icon
+                                                                                *ngIf="device && device.detail.online && device.detail.power_status=='POWER_CONNECTED' && (device.detail.battery >= 31 )"
+                                                                                color="charged"
+                                                                                class="material-icons md-icon-18">
+                                                                                battery_charging_full</mat-icon>
+                                                                            <mat-icon
+                                                                                *ngIf="device && device.detail.online && device.detail.power_status=='POWER_CONNECTED' && (device.detail.battery >= 11 && device.detail.battery <= 30 )"
+                                                                                color="alert_charged"
+                                                                                class="material-icons md-icon-18">
+                                                                                battery_charging_full</mat-icon>
+                                                                            <mat-icon
+                                                                                *ngIf="device && device.detail.online && device.detail.power_status=='POWER_CONNECTED' && (device.detail.battery >= 0 && device.detail.battery <= 10 )"
+                                                                                color="warn"
+                                                                                class="material-icons md-icon-18">
+                                                                                battery_charging_full</mat-icon>
+
+                                                                            <mat-icon
+                                                                                *ngIf="device && device.detail.online && device.detail.power_status=='POWER_DISCONNECTED' && (device.detail.battery >= 31 )"
+                                                                                color="charged"
+                                                                                class="material-icons md-icon-18">
+                                                                                battery_alert</mat-icon>
+                                                                            <mat-icon
+                                                                                *ngIf="device && device.detail.online && device.detail.power_status=='POWER_DISCONNECTED' && (device.detail.battery >= 11 && device.detail.battery <= 30 )"
+                                                                                color="alert_charged"
+                                                                                class="material-icons md-icon-18">
+                                                                                battery_alert</mat-icon>
+                                                                            <mat-icon
+                                                                                *ngIf="device && device.detail.online && device.detail.power_status=='POWER_DISCONNECTED' && (device.detail.battery >= 0 && device.detail.battery <= 10 )"
+                                                                                color="warn"
+                                                                                class="material-icons md-icon-18">
+                                                                                battery_alert</mat-icon>
+
+                                                                            <mat-icon
+                                                                                *ngIf="(device && !device.detail.online)"
+                                                                                class="material-icons md-icon-18">
+                                                                                battery_std</mat-icon>
+                                                                        </span>
+                                                                        {{device ? device.detail.battery : ''}}%
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="brand">{{device && device.device_type &&
+                                                                device.device_type.name ? device.device_type.name :
+                                                                '&nbsp;'}} {{device && device.device_name_brand ?
+                                                                device.device_name_brand.substr(0, 8) : '&nbsp;'}}</div>
+                                                            <div class="model">{{device && device.model &&
+                                                                device.model.name ? device.model.name.substr(0, 15) :
+                                                                '&nbsp;'}}</div>
+                                                            <div class="screenshot">
+                                                                <img src="{{ !device.detail.online ? 'assets/img/device_default.png' : (device.device_type && device.detail.screenshot && device.detail.screenshot.substr(0, 5)=='https' ? device.detail.screenshot : 'data:image/jpeg;base64,'+device.detail.screenshot) }}"
+                                                                    onerror="this.onerror=null;this.src='assets/img/image_default.png';"
+                                                                    fallback="assets/img/image_default.png" width="134"
+                                                                    height="229">
+                                                            </div>
+                                                            <p class="p-internal">{{device.internal_code}}</p>
+                                                            <div *ngIf="(device.detail.online)" class="boxButton">
+                                                                <button mat-stroked-button color="primary"
+                                                                    (click)="getUpdateDevice(device)"
+                                                                    class="text-button-update mt-15 mb-10">ACTUALIZAR<p>
+                                                                        SCREENSHOT</p></button>
+                                                            </div>
+                                                            <div *ngIf="(!device.detail.online)">
+                                                                <p class="texts">Últ. conexión</p>
+                                                                <p class="texts">
+                                                                    {{utils.getDateFormatDevice(device.detail.modified)}}
+                                                                    a las
+                                                                    {{utils.getHourFormatDevice(device.detail.modified)}}
+                                                                </p>
+                                                                <p class="texts texts-bottom">Hace
+                                                                    {{utils.calculateDays(device.detail.modified)}}
+                                                                    <button (click)="getUpdateDevice(device)"
+                                                                        color="primary" mat-icon-button
+                                                                        aria-label="ACTUALIZAR SCREENSHOT">
+                                                                        <mat-icon class="material-icons md-18">refresh
+                                                                        </mat-icon>
+                                                                    </button>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </div>
+                        </ng-container>
+
+
+                    </div>
+                </div>
+                <!--/contenido filters-->
+            </form>
+            <mat-paginator #paginator [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+                [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = getChannelSubsidiaries($event)">
+            </mat-paginator>
+        </mat-card>
+
+    </div>
+    <!--/boxFilters-->
+
+
+</div>
+
+
+<ng-template #template>
+    <h1 mat-dialog-title class="align-center"> Estatus global todos los segmentos</h1>
+    <div mat-dialog-actions>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <div mat-dialog-content>
+        <div class="had-container">
+            <div class="row">
+                <ng-container *ngFor="let segment of list_segment_tmp">
+                    <div class="col s12 m6 list-status" *ngIf="(segment.online+segment.offline) > 0">
+                        <div class="bggrisMoldal">
+                            <mat-panel-title>
+                                <h6 class="font-weight-bold title-modal-status ml-20">{{segment.segment.name}}</h6>
+                            </mat-panel-title>
+                            <div class="row modalChart">
+                                <div class="col s12 m6 chart p-10">
+                                    <p class="font-weight-light w-100 align-center title-chart d-none">
+                                        <i *ngIf="(segment.alert_connected)" class="material-icons">
+                                            warning
+                                        </i>
+                                        <i *ngIf="!segment.alert_connected" class="material-icons icon-opacity">
+                                            warning
+                                        </i>
+                                        Conexión WiFi
+                                    </p>
+
+                                    <div class="boxChartB2">
+
+                                        <ngx-charts-bar-vertical [animations]='true' [view]="view"
+                                            [scheme]="colorScheme" [results]="segment.conexion" [gradient]="gradient"
+                                            [barPadding]="25" [yScaleMax]="100" [yScaleMin]="0" [xAxis]="false"
+                                            [yAxis]="showYAxis" [legend]="showLegend" [xAxisLabel]="xAxisLabel"
+                                            [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                                        </ngx-charts-bar-vertical>
+
+                                    </div>
+
+
+                                    <div class="texts">
+                                        <p class="mb-10">{{segment.online}} dispositivos conectados</p>
+                                        <p>{{segment.offline}} dispositivos desconectados</p>
+                                    </div>
+                                </div>
+
+                                <div class="col s12 m6 chart p-10 line-status">
+                                    <p class="font-weight-light w-100 align-center title-chart d-none">
+                                        <i *ngIf="(segment.alert_power_device)" class="material-icons">
+                                            warning
+                                        </i>
+                                        <i *ngIf="!segment.alert_power_device" class="material-icons icon-opacity">
+                                            warning
+                                        </i>
+                                        Conectado a energía
+                                    </p>
+                                    <div class="boxChartB2">
+                                        <ngx-charts-bar-vertical [animations]='true' [view]="view"
+                                            [scheme]="colorScheme" [results]="segment.power" [gradient]="gradient"
+                                            [barPadding]="25" [yScaleMax]="100" [yScaleMin]="0" [xAxis]="false"
+                                            [yAxis]="showYAxis" [legend]="showLegend" [xAxisLabel]="xAxisLabel"
+                                            [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                                        </ngx-charts-bar-vertical>
+                                    </div>
+
+                                    <div class="texts">
+                                        <p class="mb-10">{{segment.connected_power}} dispositivos conectados</p>
+                                        <p>{{segment.disconnect_power}} dispositivos desconectados</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</ng-template>
+
+<!--modal detail modal custom-->
+<ng-template #detail>
+    <h1 mat-dialog-title class="align-center mt-30">
+        Información del dispositivo
+    </h1>
+    <div mat-dialog-actions>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <div mat-dialog-content>
+        <div class="had-container">
+            <div class="row">
+                <div class="col s12 align-center">
+
+                    <div class="boxList mt-30">
+                        <ul class="listDetails">
+                            <li>
+                                <span class="align-left">Tienda</span>
+                                <span class="align-right">{{(info_device && info_device.subsidiary_relation &&
+                                    info_device.subsidiary_relation.name) ? info_device.subsidiary_relation.name : ''
+                                    }}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">Código</span>
+                                <span *ngIf="info_device.detail && info_device.detail.provider_id"
+                                    class="align-right"><a
+                                        href="https://xxwst.esper.cloud/devices/{{info_device.detail.provider_id}}/information"
+                                        target="_blank">{{info_device?.detail.internal_code}}</a></span>
+                                <span *ngIf="!info_device.detail.provider_id"
+                                    class="align-right">{{info_device?.detail.internal_code}}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">Estado de la conexión</span>
+                                <span class="align-right">{{(info_device && info_device.detail.online) ? 'WiFi en linea'
+                                    : 'WiFi desconectado' }}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">IP dispositivo</span>
+                                <span class="align-right">{{info_device ? info_device.detail.ip_address : '0.0.0.0'
+                                    }}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">MAC dispositivo</span>
+                                <span class="align-right">{{info_device ? info_device.detail.mac_address : '' }}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">WiFi dispositivo</span>
+                                <span class="align-right">{{networkInfo && networkInfo.wifiSSID ? networkInfo.wifiSSID :
+                                    '' }}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">Nombre del dispositivo</span>
+                                <span class="align-right">{{info_device ? info_device.device_name : '' }}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">Modelo</span>
+                                <span class="align-right">{{info_device && info_device.model && info_device.model.name ?
+                                    info_device.model.name : '' }}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">IMEI N°1</span>
+                                <span class="align-right">{{networkInfo && networkInfo.imei1 ? networkInfo.imei1 :
+                                    ''}}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">IMEI N°2</span>
+                                <span class="align-right">{{networkInfo && networkInfo.imei2 ? networkInfo.imei2 :
+                                    ''}}</span>
+                            </li>
+                            <li>
+                                <span class="align-left">Nivel de batería</span>
+                                <span class="align-right">{{info_device ? info_device.detail.battery : '' }}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!--/modal detail modal custom-->
+
+<!--modal custom-->
+<div class="boxModalCustom">
+    <div class="modalCustom">
+        <a href="javascript:;" class="close btn-close" (click)="modalCustom(2)"><i class="material-icons">clear</i></a>
+        <h4 class="title-modal-detail">Screenshot de la tienda</h4>
+        <ng-container *ngFor="let device_select of subsidiary_select">
+            <p class="tienda">{{device_select ? device_select.internal_id : ''}} - {{device_select ? device_select.name
+                : ''}}</p>
+            <p class="mt-10">{{device_select ? device_select.channel_name : ''}}</p>
+            <p class="mt-10">{{device_select ? device_select.city : ''}}</p>
+            <p class="mt-20">Total dispositivos de la tienda: <span class="font-weight-bold">{{device_select ?
+                    device_select.total_device : ''}} </span></p>
+
+            <div class="boxDevices mt-30">
+                <div class="boxCenter" *ngIf="form_search.value.only_phone && device_select.device_subsidiaries?.length>0">
+                    <h4>Celulares</h4>
+                    <ng-container *ngFor="let list_device of device_select.device_subsidiaries">
+                        <div class="device device-modal" *ngFor="let device of list_device">
+                            <div class="details" (click)="openDialog(detail, device)">
+                                <div class="top">
+                                    <div class="row m-0">
+                                        <div class="col s6 p-0">
+                                            <span
+                                                [ngClass]="(device && device.detail.online) ?  'circle blue' : 'circle red'"
+                                                class="circle red"></span>
+                                            <span class="status">{{(device.detail.online) ? 'Online' :
+                                                'Offline'}}</span>
+                                        </div>
+                                        <div
+                                            [ngClass]="(device && device.detail.online) ?  'col s6 p-0 align-right text-right' : 'col s6 p-0 align-right text-right batery-opacity'">
+                                            <span class="energy">
+                                                <img *ngIf="(device && device.detail.online && device.detail.battery >= 30 )"
+                                                    src="assets/svg/ic_battery_std.svg">
+                                                <img *ngIf="(device && device.detail.online && device.detail.battery < 30 )"
+                                                    src="assets/svg/ic_battery_red.svg">
+                                                <img *ngIf="(device && !device.detail.online)"
+                                                    src="assets/svg/ic_battery_silver.svg">
+                                            </span>
+                                            {{device ? device.detail.battery : ''}}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="brand">{{device && device.device_type && device.device_type.name ?
+                                    device.device_type.name : '&nbsp;'}} {{device && device.device_name_brand ?
+                                    device.device_name_brand.substr(0, 8) : '&nbsp;'}}</div>
+                                <div class="model">{{device && device.model && device.model.name ?
+                                    device.model.name.substr(0, 15) : '&nbsp;'}}</div>
+                                <div class="screenshot">
+                                    <img src="{{ !device.detail.online ? 'assets/img/device_default.png' : (device.device_type && device.detail.screenshot?.substr(0, 5)=='https' ? device.detail.screenshot : 'data:image/jpeg;base64,'+device.detail.screenshot) }}"
+                                        onerror="this.onerror=null;this.src='assets/img/device_default.png';"
+                                        fallback="assets/img/device_default.png" width="134" height="229">
+                                </div>
+                            </div>
+                            <div *ngIf="(device ? device.detail.online : '')" class="boxButton boxButton-modal">
+                                <button mat-stroked-button color="primary" (click)="getUpdateDevice(device)"
+                                    class="text-button-update mt-15 mb-10">ACTUALIZAR<p>SCREENSHOT</p></button>
+                            </div>
+                            <div *ngIf="(!device.detail.online)">
+                                <p class="texts texts-modal">Últ. conexión</p>
+                                <p class="texts texts-modal">{{device ?
+                                    utils.getDateFormatDevice(device.detail.modified) : ''}} a las {{device ?
+                                    utils.getHourFormatDevice(device.detail.modified) : ''}}</p>
+                                <p class="texts texts-bottom-modal">Hace {{device ?
+                                    utils.calculateDays(device.detail.modified) : ''}}
+                                    <button (click)="getUpdateDevice(device)" color="primary" mat-icon-button
+                                        aria-label="ACTUALIZAR SCREENSHOT">
+                                        <mat-icon class="material-icons md-18">refresh</mat-icon>
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="boxCenter" *ngIf="form_search.value.only_tablet && device_select.device_tablet?.length>0">
+                    <h4>Tablets</h4>
+                    <ng-container *ngFor="let list_device of device_select.device_tablet">
+                        <div class="device device-modal" *ngFor="let device of list_device">
+                            <div class="details" (click)="openDialog(detail, device)">
+                                <div class="top">
+                                    <div class="row m-0">
+                                        <div class="col s6 p-0">
+                                            <span
+                                                [ngClass]="(device && device.detail.online) ?  'circle blue' : 'circle red'"
+                                                class="circle red"></span>
+                                            <span class="status">{{(device.detail.online) ? 'Online' :
+                                                'Offline'}}</span>
+                                        </div>
+                                        <div
+                                            [ngClass]="(device && device.detail.online) ?  'col s6 p-0 align-right text-right' : 'col s6 p-0 align-right text-right batery-opacity'">
+                                            <span class="energy">
+                                                <img *ngIf="(device && device.detail.online && device.detail.battery >= 30 )"
+                                                    src="assets/svg/ic_battery_std.svg">
+                                                <img *ngIf="(device && device.detail.online && device.detail.battery < 30 )"
+                                                    src="assets/svg/ic_battery_red.svg">
+                                                <img *ngIf="(device && !device.detail.online)"
+                                                    src="assets/svg/ic_battery_silver.svg">
+                                            </span>
+                                            {{device ? device.detail.battery : ''}}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="brand">{{device && device.device_type && device.device_type.name ?
+                                    device.device_type.name : '&nbsp;'}} {{device && device.device_name_brand ?
+                                    device.device_name_brand.substr(0, 8) : '&nbsp;'}}</div>
+                                <div class="model">{{device && device.model && device.model.name ?
+                                    device.model.name.substr(0, 15) : '&nbsp;'}}</div>
+                                <div class="screenshot">
+                                    <img src="{{ !device.detail.online ? 'assets/img/device_default.png' : (device.device_type && device.detail.screenshot?.substr(0, 5)=='https' ? device.detail.screenshot : 'data:image/jpeg;base64,'+device.detail.screenshot) }}"
+                                        onerror="this.onerror=null;this.src='assets/img/device_default.png';"
+                                        fallback="assets/img/device_default.png" width="134" height="229">
+                                </div>
+                            </div>
+                            <div *ngIf="(device ? device.detail.online : '')" class="boxButton boxButton-modal">
+                                <button mat-stroked-button color="primary" (click)="getUpdateDevice(device)"
+                                    class="text-button-update mt-15 mb-10">ACTUALIZAR<p>SCREENSHOT</p></button>
+                            </div>
+                            <div *ngIf="(!device.detail.online)">
+                                <p class="texts texts-modal">Últ. conexión</p>
+                                <p class="texts texts-modal">{{device ?
+                                    utils.getDateFormatDevice(device.detail.modified) : ''}} a las {{device ?
+                                    utils.getHourFormatDevice(device.detail.modified) : ''}}</p>
+                                <p class="texts texts-bottom-modal">Hace {{device ?
+                                    utils.calculateDays(device.detail.modified) : ''}}
+                                    <button (click)="getUpdateDevice(device)" color="primary" mat-icon-button
+                                        aria-label="ACTUALIZAR SCREENSHOT">
+                                        <mat-icon class="material-icons md-18">refresh</mat-icon>
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+<!--/modal custom-->
+
+<app-spinner [spinner]="spinner"></app-spinner>

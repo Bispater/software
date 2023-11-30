@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="23.751" height="14.046" viewBox="0 0 23.751 14.046">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="14.046" height="23.751" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Repetir_cuadrícula_1" data-name="Repetir cuadrícula 1" transform="translate(23.751) rotate(90)" clip-path="url(#clip-path)">
+    <g id="Grupo_1877" data-name="Grupo 1877" transform="translate(2.121 2.122)">
+      <line id="Línea_1" data-name="Línea 1" x2="13.864" transform="translate(0 19.508) rotate(-45)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3"/>
+      <line id="Línea_3" data-name="Línea 3" x2="13.864" transform="translate(0 0) rotate(45)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3"/>
+    </g>
+  </g>
+</svg>

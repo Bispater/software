@@ -1,0 +1,9 @@
+{
+    "*/_search/*": {
+      "target": "https://0abd1e5658914e9e9c49a2ea436ce279.us-west1.gcp.cloud.es.io",
+      "pathRewrite": { "^/_search": "" },
+      "secure": false,
+      "logLevel" : "debug",
+      "changeOrigin": true
+    }
+  }

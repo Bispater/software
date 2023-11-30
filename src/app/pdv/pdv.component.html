@@ -1,0 +1,305 @@
+<div class="headTitle">
+    <h1 class="title-state">Dashboard <b class="bColor">Foto de Éxito</b></h1>
+    <div class="logo" routerLink="/v4">
+        <img src="assets/svg/logo-entel.svg">
+    </div>
+</div>
+
+<mat-card>
+    <div class="first-row">
+        <div class="name-content">
+            <form class="store-select">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Buscar por Franquicia</mat-label>
+                    <input type="text" placeholder="Selecciona una Franquicia" aria-label="Number" matInput
+                        [formControl]="myControl" [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                            {{option}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-icon matSuffix (click)="myControl.setValue('')">clear</mat-icon>
+                </mat-form-field>
+            </form>
+        </div>
+        <div class="search-icon-content">
+            <div>
+                <div class="div-icons">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>notifications_active</mat-icon>
+                        <mat-badge matBadgePosition="above" matBadge="3" matBadgeColor="warn"></mat-badge>
+                    </button>
+                    <button mat-icon-button (click)="openConfirmDialog()">
+                        <mat-icon>file_download</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="openSnackBar()">
+                        <mat-icon class="rotated">link</mat-icon>
+                    </button>
+                    <!-- NOTIFICATIONS SHOW -->
+                    <mat-menu #menu="matMenu" xPosition="before">
+                        <ng-container *ngFor="let notification of notifications">
+                            <div class="cardNotification">
+                                <div class="cardAdjust">
+                                    <span mat-menu-item>{{notification.title}}</span>
+                                    <span mat-menu-item>Hace 13 horas</span>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </mat-menu>
+                </div>
+                <div class="div-search">
+                    <input class="inputShadow" name="sea-rch" matInput (keyup)="applyFilter($event)" #input type="text"
+                        placeholder="   ¿Buscas algo adicional?">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="second-row">
+        <div class="col-left">
+            <div class="card">
+                <mat-tab-group>
+                    <mat-tab label="EVALUACIÓN FRANQUICIA">
+                        <div class="tab-adjust">
+                            <div class="no-background">
+                                <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8" matSort>
+
+                                    <!--- Note that these columns can be defined in any order.
+                                        The actual rendered columns are set as a property on the row definition" -->
+
+                                    <!-- Code Column -->
+                                    <ng-container matColumnDef="code">
+                                        <th mat-header-cell *matHeaderCellDef> Code </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.code}}</td>
+                                    </ng-container>
+
+                                    <!-- Name Column -->
+                                    <ng-container matColumnDef="name">
+                                        <th mat-header-cell *matHeaderCellDef> Nombre PDV</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.name}}</td>
+                                    </ng-container>
+
+                                    <!-- Franchise Column -->
+                                    <ng-container matColumnDef="franchise">
+                                        <th mat-header-cell *matHeaderCellDef> Franquicia </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.franchise}} </td>
+                                    </ng-container>
+
+                                    <!-- Device Column -->
+                                    <ng-container matColumnDef="device">
+                                        <th mat-header-cell *matHeaderCellDef> Equipo </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[0].cell_value >= 31.5 ) ? (greenColor) : (element.data[0].cell_value >= 23.5) ? (yellowColor) : (redColor)}">
+                                            <b>{{element.data[0].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Home Column -->
+                                    <ng-container matColumnDef="home">
+                                        <th mat-header-cell *matHeaderCellDef> Hogar </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[1].cell_value >= 27.5 ) ? (greenColor) : (element.data[1].cell_value >= 20.5) ? (yellowColor) : (redColor)}">
+                                            <b>{{element.data[1].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Accesories Column -->
+                                    <ng-container matColumnDef="accesories">
+                                        <th mat-header-cell *matHeaderCellDef> Accesorios </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[2].cell_value >= 19.5 ) ? (greenColor) : (element.data[2].cell_value >= 14.5) ? (yellowColor) : (redColor)}">
+                                            <b> {{element.data[2].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Image Column -->
+                                    <ng-container matColumnDef="image">
+                                        <th mat-header-cell *matHeaderCellDef> Imagen </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[3].cell_value >= 19.5 ) ? (greenColor) : (element.data[3].cell_value >= 14.5) ? (yellowColor) : (redColor)}">
+                                            <b>{{element.data[3].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Mark Column -->
+                                    <ng-container matColumnDef="mark" class="separateColumn">
+                                        <th mat-header-cell *matHeaderCellDef> Nota </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[4].cell_value >= 100 ) ? (greenColor) : (element.data[4].cell_value >= 80) ? (yellowColor) : (redColor)}">
+                                            <b> {{element.data[4].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsEntel"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsEntel;"></tr>
+                                </table>
+                                <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons
+                                    aria-label="Select page of periodic elements">
+                                </mat-paginator>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="EVALUACIÓN PDV">
+                        <div class="tab-adjust">
+                            <div class="no-background">
+                                <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8" matSort>
+
+                                    <!--- Note that these columns can be defined in any order.
+                                        The actual rendered columns are set as a property on the row definition" -->
+
+                                    <!-- Code Column -->
+                                    <ng-container matColumnDef="code">
+                                        <th mat-sort-header mat-header-cell *matHeaderCellDef> Code </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.code}}</td>
+                                    </ng-container>
+
+                                    <!-- Name Column -->
+                                    <ng-container matColumnDef="name">
+                                        <th mat-header-cell *matHeaderCellDef> Nombre PDV</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.name}}</td>
+                                    </ng-container>
+
+                                    <!-- Franchise Column -->
+                                    <ng-container matColumnDef="franchise">
+                                        <th mat-header-cell *matHeaderCellDef> Franquicia </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.franchise}} </td>
+                                    </ng-container>
+
+                                    <!-- Device Column -->
+                                    <ng-container matColumnDef="device">
+                                        <th mat-sort-header mat-header-cell *matHeaderCellDef> Equipo </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[0].cell_value >= 31.5 ) ? (greenColor) : (element.data[0].cell_value >= 23.5) ? (yellowColor) : (redColor)}">
+                                            <b>{{element.data[0].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Home Column -->
+                                    <ng-container matColumnDef="home">
+                                        <th mat-sort-header mat-header-cell *matHeaderCellDef> Hogar </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[1].cell_value >= 27.5 ) ? (greenColor) : (element.data[1].cell_value >= 20.5) ? (yellowColor) : (redColor)}">
+                                            <b>{{element.data[1].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Accesories Column -->
+                                    <ng-container matColumnDef="accesories">
+                                        <th mat-sort-header mat-header-cell *matHeaderCellDef> Accesorios </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[2].cell_value >= 19.5 ) ? (greenColor) : (element.data[2].cell_value >= 14.5) ? (yellowColor) : (redColor)}">
+                                            <b> {{element.data[2].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Image Column -->
+                                    <ng-container matColumnDef="image">
+                                        <th mat-sort-header mat-header-cell *matHeaderCellDef> Imagen </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[3].cell_value >= 19.5 ) ? (greenColor) : (element.data[3].cell_value >= 14.5) ? (yellowColor) : (redColor)}">
+                                            <b>{{element.data[3].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Mark Column -->
+                                    <ng-container matColumnDef="mark">
+                                        <th mat-sort-header mat-header-cell *matHeaderCellDef
+                                            sortActionDescription="Sort by mark"> Nota </th>
+                                        <td mat-cell *matCellDef="let element"
+                                            [ngStyle]="{'background-color': (element.data[4].cell_value >= 100 ) ? (greenColor) : (element.data[4].cell_value >= 80) ? (yellowColor) : (redColor)}">
+                                            <b> {{element.data[4].cell_value}}%</b>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsEntel"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsEntel;"></tr>
+                                </table>
+                                <mat-paginator [pageSizeOptions]="[8, 10, 20]" showFirstLastButtons
+                                    aria-label="Select page of periodic elements">
+                                </mat-paginator>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+        <div class="col-right">
+            <div class="card">
+                <h6><b>Escala de evaluación</b></h6>
+                <div class="no-background">
+                    <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
+
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- scale Column -->
+                        <ng-container matColumnDef="scale">
+                            <th mat-header-cell *matHeaderCellDef>Índice</th>
+                            <td mat-cell *matCellDef="let element"
+                                [ngStyle]="{'background-color': (element.scale === '>') ? (greenColor) : (element.scale === '=') ? (yellowColor) : (redColor)}">
+                                <b>{{element.scale}}</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- Devices Column -->
+                        <ng-container matColumnDef="devices">
+                            <th mat-header-cell *matHeaderCellDef> Equipos</th>
+                            <td mat-cell *matCellDef="let element"
+                                [ngStyle]="{'background-color': (element.devices >= 31.5) ? (greenColor) : (element.devices >= 23.5) ? (yellowColor) : (redColor)}">
+                                <b>{{element.devices}}%</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- Home Column -->
+                        <ng-container matColumnDef="home">
+                            <th mat-header-cell *matHeaderCellDef> Hogar </th>
+                            <td mat-cell *matCellDef="let element"
+                                [ngStyle]="{'background-color': (element.home >= 27.5) ? (greenColor) : (element.home >= 20.5) ? (yellowColor) : (redColor)}">
+                                <b>{{element.home}}%</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- Accesories Column -->
+                        <ng-container matColumnDef="accesories">
+                            <th mat-header-cell *matHeaderCellDef> Accesorios </th>
+                            <td mat-cell *matCellDef="let element"
+                                [ngStyle]="{'background-color': (element.accesories >= 19.5) ? (greenColor) : (element.accesories >= 14.5) ? (yellowColor) : (redColor)}">
+                                <b>{{element.accesories}}%</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- Image Column -->
+                        <ng-container matColumnDef="image">
+                            <th mat-header-cell *matHeaderCellDef> Imagen </th>
+                            <td mat-cell *matCellDef="let element"
+                                [ngStyle]="{'background-color': (element.image >= 19.5) ? (greenColor) : (element.image >= 14.5) ? (yellowColor) : (redColor)}">
+                                <b>{{element.image}}%</b>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h6><b>Consejos</b></h6>
+                <p>
+                    Te recomendamos revisar el documento donde te
+                    indicamos como se deben implementar los distintos
+                    materiales que disponemos en nuestros puntos de venta.
+                </p>
+                <br>
+                <p>
+                    Recuerda que la implementación es una KPI
+                    objetivo del negocio y esto ayudará a mejorar tus ventas.
+                </p>
+                <br>
+            </div>
+        </div>
+    </div>
+
+
+</mat-card>
+
+
+<app-spinner [spinner]="spinner"></app-spinner>

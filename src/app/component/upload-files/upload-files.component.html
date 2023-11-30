@@ -1,0 +1,17 @@
+<input #fileInput type="file" name="myfile" (change)="uploadFile($event)" class="file-create" placeholder="Seleccione el archivo">
+
+<div>
+    <span class="percent white" *ngIf="uploadPercent | async as pct"  [style.left.%]="(pct | number)"> {{ pct | number:'1.0-0' }}%</span>
+    <div class="progress-bar">
+        <mat-progress-bar class="progress-bar" mode="determinate" *ngIf="uploadPercent | async as pct" value="{{pct | number:'1.0-0'}}"></mat-progress-bar>
+    </div>
+</div>
+
+<!-- <div class="col-1">
+    <span>&nbsp;</span> 
+    <div class="progress-bar"></div>
+    <a href="javascript:void(0);" class="btn_action orange up" mat-menu-item (click)="uploadFile()"  [attr.disabled]="btnInactive ? 'disabled' : null">
+        <mat-icon aria-hidden="false" aria-label="upload">cloud_upload</mat-icon>
+        <small>Subir Video</small>
+    </a>
+</div> -->

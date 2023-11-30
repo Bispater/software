@@ -1,0 +1,111 @@
+<app-menu *ngIf="version !== 'v4'"></app-menu>
+<div class="modal" *ngIf="(progress_spinner)" >
+	<mat-spinner class="mat-spinner"></mat-spinner>	
+</div>
+<div class="content-wrapper">
+    <!------ Title Bar ------>
+    <div class="title-wrapper">
+        <div class="title-box">
+            <h1><span>Estado</span> Equipos por Cadena</h1>
+            <h4>Resumen de equipos activos e inactivos</h4>
+        </div>
+
+        <div class="status-wrapper">
+            <span class="tool-label last">Última actualización <br> {{ currentDate }}</span>
+            <span class="tool-label">Red Wifi</span>
+            <div class="status">
+                <div class="indicator on"></div>
+                <div class="number">{{ connected_qty_gral }} <span>On</span></div>
+            </div>
+
+            <div class="status">
+                <div class="indicator off"></div>
+                <div class="number">{{ disconnect_qty_gral }} <span>Off</span></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!------ Stores Slider ------>
+    <div class="stores-wrapper">
+        <div class="main-carousel" *ngIf="qtyDevicesTrade.length > 0">
+          <div class="carousel-cell"   *ngFor="let item of trades"  (click)="onSelect(item)" [ngClass]="(tradeActive == item) ? 'active' : ''">
+              <img src="{{ item.logo }}" title="{{ item.name }}" onerror="this.onerror=null;this.src='assets/images/logo.svg';">
+              <ul>
+                  <li><span>{{ getQtyDevicesGroup(item.id).connected_qty }}</span> On</li>
+                  <li><span>{{ getQtyDevicesGroup(item.id).disconnect_qty }}</span> Off</li>
+              </ul>
+          </div>
+
+        </div>
+    </div>	
+
+    <!------ Title Bar ------>
+    <div class="title-wrapper">
+        <div class="title-box">
+            <h1><span>Detalle</span> del estado por Cadena</h1>
+        </div>
+        
+        <input type="text" class="search se-2" (keyup)="search($event)" placeholder="Buscar">
+
+        <select class="find" (change)="onSelect($event.target.value)">
+            <option selected disable value="0">Por Cadena Comercial</option>
+            <option *ngFor="let item of trades" value="{{ item.id }}">{{ item.name }}</option>
+        </select>
+        <!-- <svg (click)="expand()" width="30" height="30" viewBox="0 0 16 16" class=" expand bi bi-arrows-expand" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8zm6-1.5a.5.5 0 0 0 .5-.5V1.5a.5.5 0 0 0-1 0V6a.5.5 0 0 0 .5.5z"/>
+            <path fill-rule="evenodd" d="M10.354 3.854a.5.5 0 0 0 0-.708l-2-2a.5.5 0 0 0-.708 0l-2 2a.5.5 0 1 0 .708.708L8 2.207l1.646 1.647a.5.5 0 0 0 .708 0zM8 9.5a.5.5 0 0 1 .5.5v4.5a.5.5 0 0 1-1 0V10a.5.5 0 0 1 .5-.5z"/>
+            <path fill-rule="evenodd" d="M10.354 12.146a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L8 13.793l1.646-1.647a.5.5 0 0 1 .708 0z"/>
+        </svg> -->
+
+        <img src="assets/images/expand.svg" (click)="expand()" class="expand">
+        
+    </div>
+
+    <!------ Groups List ------>
+    <div class="groups-wrapper" >
+        <ul>
+            <li *ngFor="let item of subsidiariesTemp" [ngClass]="expandAll ? 'on' : 'off'" class="item-list" id="{{item.id}}" (click)="getToogle(item.id)">
+                <img src="{{ (tradeActive) ? tradeActive.logo : item.logo }}" title="{{ item.name }}" onerror="this.onerror=null;this.src='assets/images/logo.svg';">
+                <span [innerHTML]="item.name | safe: 'no-html'"></span>
+                <span class="cant" id="cant_{{ item.id}}">-</span>
+
+                <div class="store-list">
+                    <ul>
+                        <li *ngFor="let item_device of getDevicesSubsidiary(item.id);"> 
+                            <div>
+                                <label class="circle" [ngClass]="getStatus(item_device.detail.modified) ? 'on' : 'off'">&nbsp;</label>
+                                <label title="{{ getPlaceHolder(item_device.detail.modified) }}">
+                                    {{ item_device.device_type.name }} 
+                                    {{ item_device.device_name }} 
+                                    - {{ item_device.serial }}. 
+                                    <small class="last-conn">{{ getPlaceHolder(item_device.detail.modified) }}</small>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+    <!------ Page View ------>
+    <!-- <div class="pages-wrapper">
+        <ul class="page-fast">
+            <li>6 de 20</li>
+            <li>Mostrar:</li>
+            <li>20</li>
+            <li class="active">50</li>
+            <li>100</li>
+            <li>200</li>
+        </ul>
+        <ul class="page-numbers">
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li><img src="assets/images/arrow-right.svg"></li>
+        </ul>
+    </div> -->
+</div>

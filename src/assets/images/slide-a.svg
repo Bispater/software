@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="31" height="20" viewBox="0 0 31 20">
+  <g id="Grupo_22" data-name="Grupo 22" transform="translate(-686 -602)">
+    <g id="Rectángulo_1" data-name="Rectángulo 1" transform="translate(686 602)" fill="none" stroke="#000" stroke-width="1">
+      <rect width="31" height="20" rx="10" stroke="none"/>
+      <rect x="0.5" y="0.5" width="30" height="19" rx="9.5" fill="none"/>
+    </g>
+    <g id="Rectángulo_2" data-name="Rectángulo 2" transform="translate(701 606)" fill="none" stroke="#00c134" stroke-width="1.5">
+      <rect width="12" height="12" rx="6" stroke="none"/>
+      <rect x="0.75" y="0.75" width="10.5" height="10.5" rx="5.25" fill="none"/>
+    </g>
+  </g>
+</svg>

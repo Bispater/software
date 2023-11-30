@@ -1,0 +1,150 @@
+<div class="headTitle">
+    <h1 class="title-state">Dashboard <b class="bColor">Foto de Éxito</b></h1>
+    <div class="logo" routerLink="/v4">
+        <img src="assets/svg/logo-entel.svg">
+    </div>
+</div>
+
+<mat-card>
+    <div class="first-row">
+        <div class="name-content">
+            <form class="store-select">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Buscar por Franquicia</mat-label>
+                    <input type="text" placeholder="Selecciona una Franquicia" aria-label="Number" matInput
+                        [formControl]="myControl" [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                            {{option}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-icon matSuffix (click)="myControl.setValue('')">clear</mat-icon>
+                </mat-form-field>
+            </form>
+        </div>
+        <div class="search-icon-content">
+            <div>
+                <div class="div-icons">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>notifications_active</mat-icon>
+                        <mat-badge matBadgePosition="above" matBadge="3" matBadgeColor="warn"></mat-badge>
+                    </button>
+                    <button mat-icon-button (click)="openConfirmDialog()">
+                        <mat-icon>file_download</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="openSnackBar()">
+                        <mat-icon class="rotated">link</mat-icon>
+                    </button>
+                    <!-- NOTIFICATIONS SHOW -->
+                    <mat-menu #menu="matMenu" xPosition="before">
+                        <ng-container *ngFor="let notification of notifications">
+                            <div class="cardNotification">
+                                <div class="cardAdjust">
+                                    <span mat-menu-item>{{notification.title}}</span>
+                                    <span mat-menu-item>Hace 13 horas</span>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </mat-menu>
+                </div>
+                <div class="div-search">
+                    <!-- THIS GOES INSIDE OF THE INPUT BELOW FOR DATA FILTER-->
+                    <!-- (keyup)="applyFilter($event)" -->
+                    <input class="inputShadow" name="sea-rch" matInput #input type="text" placeholder="   ¿Buscas algo adicional?">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="second-row">
+        <div class="col-left">
+            <div class="card card-adjust">
+                <div class="container-data">
+                    <div class="row-title">
+                        <div class="col">
+                            <h6>Resumen</h6>
+                        </div>
+                        <div class="col">
+                            <h6>Solucionadas</h6>
+                        </div>
+                        <div class="col">
+                            <h6>Pendientes</h6>
+                        </div>
+                        <div class="col">
+                            <h6>Evaluación</h6>
+                        </div>
+                    </div>
+                    <div class="row-content">
+                        <div class="col">
+                            <p> En los últimos <span>30</span> días, se han generado <span>70</span> incidencias.</p>
+                        </div>
+                        <div class="vl-1"></div>
+                        <div class="col">
+                            <h3>43</h3>
+                            <h6>+13(+1.21%)</h6>
+                        </div>
+                        <div class="vl-2"></div>
+                        <div class="col">
+                            <h3>27</h3>
+                            <h6>+311(+7.44%)</h6>
+                        </div>
+                        <div class="vl-3"></div>
+                        <div class="col">
+                            <h3>78<span class="modern">/100</span></h3>
+                            <div class="row">
+                                <hr class="col first">
+                                <hr class="col second">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-right">
+            <div class="card card-adjust">
+                <h6><b>Histórico</b></h6>
+                <div>
+                    <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height: '150px'}">
+                    </canvasjs-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="third-row">
+        <div class="col-left">
+            <div class="card card-adjust">
+                <h6><b>Últimas Incidencias</b></h6>
+                <div class="card">
+                    <div class="container-fluid" style="background-color: blue">
+                        <div class="no-background">
+                            <app-table-expand></app-table-expand>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-right">
+            <div class="card card-adjust first">
+                <h6><b>Semana 45</b></h6>
+                <div style="margin-top: 25px">
+                    <!-- <div id="donutchart" style="width: 900px; height: 500px;"></div> -->
+                    <!-- <canvasjs-chart [options]="chartOptions" (chartInstance)="getChartInstance($event)" [styles]="{width: '100%', height: '160px'}"></canvasjs-chart> -->
+                    <!-- <button [ngClass]="'backButton'" *ngIf="this.isButtonVisible" (click)="handleClick($event)">Atrás</button> -->
+                    <div>
+                        <canvasjs-chart [options]="splineChart" [styles]="{width: '100%', height:'150px'}">
+                        </canvasjs-chart>
+                    </div>
+                </div>
+                <div class="vl-3"></div>
+            </div>
+            <div class="card card-adjust second">
+                <h6><b>Actividad de usuarios</b></h6>
+                <div>
+                    <canvasjs-chart [options]="chartOptionsJs" [styles]="{width: '100%', height:'360px'}">
+                    </canvasjs-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-card>

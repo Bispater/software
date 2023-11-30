@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col s12 mb-35 boxChartTexts">
+      <h5>RESULTADOS</h5>
+      <p>Segmentos: <b>Tiendas propias</b></p>
+      <p>Fecha: <b>Hoy</b></p>
+      <p>Total interacciones: <b>10.000</b></p>
+    </div>
+  </div>
+  
+  <div><!-- id="d-grid"-->
+  <ngx-charts-bar-vertical
+  
+    [scheme]="colorScheme"
+    [results]="single"
+    [gradient]="gradient"
+    [xAxis]="showXAxis"
+    [yAxis]="showYAxis"
+    [legend]="showLegend"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    (select)="onSelect($event)">
+  </ngx-charts-bar-vertical>
+  </div>

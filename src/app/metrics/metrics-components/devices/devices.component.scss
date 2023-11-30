@@ -1,0 +1,341 @@
+.initial {
+    margin-top: 60px;
+    display: flex;
+
+    .col-1 {
+        width: 50%;
+        justify-content: left;
+        margin-left: -60px;
+    }
+
+    .col-2 {
+        width: 50%;
+        display: flex;
+        justify-content: right;
+    }
+}
+
+.card-adjust {
+    height: 45px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.mark-card {
+    height: 70px;
+    width: 100%;
+    padding: 10px;
+}
+
+.row {
+
+    //display: flex;
+    //mat progress bar background-color 
+    ::ng-deep .mat-progress-bar-fill::after {
+        background-color: #005cff;
+    }
+}
+
+.col-1 {
+    width: 50%;
+    height: 30px;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+
+    ::ng-deep mat-form-field {
+        span {
+            margin: 0px;
+        }
+    }
+
+    h6 {
+        margin-left: 30px;
+    }
+
+    .mat-progress-bar {
+        width: 200px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 3px;
+        margin-left: 30px;
+    }
+}
+
+.col-2 {
+    width: 50%;
+    height: 30px;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    flex-direction: row;
+
+    h6 {
+        margin-left: 30px;
+    }
+
+    .mat-progress-bar {
+        width: 220px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 3px;
+        margin-left: 30px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 150px;
+        width: 100%;
+    }
+
+    .point-container {
+        margin-left: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .point {
+        // margin-left: 20px;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        margin-bottom: 10px;
+    }
+
+    .red {
+        background-color: red;
+    }
+
+    .green {
+        background-color: green;
+    }
+
+    .black-color {
+        background-color: rgb(180, 180, 188);
+    }
+
+    .yellow {
+        background-color: yellow;
+    }
+
+    .text {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+
+}
+
+.item {
+    width: 33.33%;
+}
+
+/* RESUME CARD */
+
+.resume-card-adjust {
+    margin-top: 10px;
+    height: 200px;
+}
+
+.resume-col-1 {
+    width: 50%;
+    height: 30px;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    flex-direction: row;
+
+    h6 {
+        margin-left: 30px;
+    }
+
+    .mat-progress-bar {
+        width: 200px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 3px;
+        margin-left: 30px;
+    }
+}
+
+.resume-col-2 {
+    width: 50%;
+    height: 30px;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    flex-direction: row;
+
+    h6 {
+        margin-left: 30px;
+    }
+
+    .mat-progress-bar {
+        width: 220px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 3px;
+        margin-left: 30px;
+    }
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .mat-progress-bar {
+        width: 220px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 13px;
+        margin-left: 30px;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+        background-color: #005cff;
+    }
+}
+
+.finalMarks {
+    display: flex;
+    justify-content: space-evenly;
+
+    .qualify-btn {
+        background-color: #005cff;
+        border: none;
+        height: auto;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .qualify-btn:hover {
+        box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+}
+
+mat-icon {
+    cursor: pointer;
+}
+
+mat-form-field {
+    border: #005cff;
+}
+
+#myInput {
+    background-image: url('../../../../assets/images/search.svg');
+    /* Add a search icon to input */
+    background-position: 10px 12px;
+    /* Position the search icon */
+    background-repeat: no-repeat;
+    /* Do not repeat the icon image */
+    background-color: #ffffff;
+    border-radius: 15px;
+    width: 100%;
+    /* Full-width */
+    font-size: 16px;
+    /* Increase font-size */
+    padding: 12px 20px 12px 40px;
+    /* Add some padding */
+    margin-bottom: 12px;
+    /* Add some space below the input */
+}
+
+.content_image {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+    padding: 20px;
+}
+
+.content_image::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -10px;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
+    pointer-events: none;
+}
+
+.content_image::-webkit-scrollbar {
+    height: 5px;
+}
+
+.content_image::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.content_image::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.content_image::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.content_image::-webkit-scrollbar-corner {
+    background: #f1f1f1;
+}
+
+.deleteButton {
+    position: absolute; 
+    top: 5px; 
+    right: 5px;
+}
+
+.dropImageButton {
+    cursor: pointer !important;
+    min-width: 150px;
+    min-height: 100px;
+    margin-left: 15px;
+    border-radius: 10px;
+    border-style: dashed;
+}
+
+/* Style the x icon button */
+button.mat-icon-button {
+    background-color: rgb(247, 247, 247);
+    opacity: 0.7;
+    border: none;
+  }
+  
+  /* Style the x icon */
+  button.mat-icon-button .mat-icon {
+    font-size: 1.5rem;
+    color: #aaa;
+  }
+  
+  /* Add hover effect to the x icon */
+  button.mat-icon-button:hover .mat-icon {
+    color: rgb(0, 4, 255);
+  }
+
+  /* Add circle effect to the x icon */
+button.mat-icon-button:hover .mat-icon:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    box-sizing: border-box;
+  }

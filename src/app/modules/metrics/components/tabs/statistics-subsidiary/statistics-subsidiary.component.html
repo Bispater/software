@@ -1,0 +1,224 @@
+<div class="had-container mt-40">
+    <div class="row">
+        <div class="col s12">
+            <button mat-raised-button class="right btn-download" (click)="exportAsPDF('padre');">
+                <mat-icon>download</mat-icon>
+                descargar informe
+            </button>
+        </div>  
+    </div>
+    <div id="padre">
+        <div class="row">
+            <div class="col s4 pr-0 pl-0">
+                <!-- <app-filter></app-filter> -->
+                <form [formGroup]="form_search">
+                    <div class="boxFilters">
+                                    
+                        <p class="mt-15 title-filter-to">Filtrar por</p>  
+                        <!--filter-->
+                        <div class="boxFilter">
+                            <label  class="custom">Segmentos</label>
+                            <mat-form-field appearance="fill"  class="w-100">
+                                <mat-label>Elige un segmento</mat-label>
+                                <mat-select formControlName="channel" (selectionChange)="selectedValue($event)" >
+                                    <mat-option *ngFor="let list of filter_channel" value="{{list.id}}">{{list.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="boxFilter">
+                            <label  class="custom">Tiendas</label>
+                            <mat-form-field appearance="fill"  class="w-100">
+                                <mat-label>Elige una o más tiendas</mat-label>
+                                <mat-select formControlName="subsidiary" (selectionChange)="selectedSubsidiary($event)" multiple>
+                                    <mat-option *ngFor="let list of filter_subsidiary_tmp" value="{{list.id}}">{{list.internal_id}} - {{list.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="boxFilter">
+                            <label  class="custom">Fecha</label>
+                            <mat-form-field appearance="fill"  class="w-100">
+                                <mat-label>Elige una fecha</mat-label>
+                                <mat-select formControlName="date" (selectionChange)="CleanDateRange()">
+                                    <mat-option value="0">Hoy</mat-option>
+                                    <mat-option value="7">Últimos 7 días</mat-option>
+                                    <mat-option value="15">Últimos 15 días</mat-option>
+                                    <mat-option value="30">Últimos 30 días</mat-option>
+                                    <mat-option value="40">Personalizar fechas</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div><!--/filter-->
+                        <!--filter-->
+                        <div class="boxFilter">
+                            <label  class="custom">Rango de fecha</label>
+                            
+                            <mat-form-field appearance="fill" class="w-100">
+                                <mat-label>Ingresa un rango de fecha</mat-label>
+                                <mat-date-range-input [formGroup]="form_search" [min]="minDate" [max]="maxDate" [rangePicker]="picker">
+                                <input matStartDate formControlName="start_date" disabled (dateChange)="CleanDate()" placeholder="">
+                                <input matEndDate formControlName="end_date" disabled (dateChange)="CleanDate()" placeholder="">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            
+                                <!-- <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                                <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error> -->
+                            </mat-form-field>
+                        </div><!--/filter-->
+                    
+                        <div class="boxButtons mt-70">
+                            <button mat-raised-button color="primary" class="w-100 mb-20" (click)="onSubmit()">Aplicar Filtros</button>
+                            <button mat-raised-button class="w-100" (click)="resetForm()">Limpiar filtros</button>
+                        </div>
+                    
+                    
+                    </div>
+                </form>
+            </div>
+            <div class="col s8 pl-0 pr-0">
+                <div class="col s12 bg-white">
+                    <div class="p-20 d-inline-block w-100">
+                        <!-- <app-chart></app-chart> -->
+                        <div class="row">
+                            <div class="col s12 mb-35 boxChartTexts">
+                            <h5>RESULTADOS</h5>
+                            <p>Segmentos: <b>{{legend_channel}}</b></p>
+                            <p>Tiendas: <b>{{legend_subsidiary}}</b></p>
+                            <p>Fecha: <b>{{legend_date}}{{legend_date_range}}</b></p>
+                            <p>Total interacciones: <b>{{total_count_device}}</b></p>
+                            </div>
+                        </div>
+                        
+                        <div><!-- id="d-grid"-->
+                            <ngx-charts-bar-vertical
+                                [scheme]="colorScheme"
+                                [results]="chart_single"
+                                [gradient]="gradient"
+                                [xAxis]="showXAxis"
+                                [yAxis]="showYAxis"
+                                [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabel"
+                                [showYAxisLabel]="showYAxisLabel"
+                                [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel"
+                                [dataLabelFormatting]="formatDataLabel"
+                                [rotateXAxisTicks]="false"
+                                [barPadding]="76"
+                                (select)="onSelect($event)">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <mat-card>
+            <div class="row">
+                <div class="col s8">
+                    <h5>Ranking de dispositivos más tocados</h5>
+                    <h6>{{legend_channel}}</h6>
+                    <h6>{{legend_subsidiary}}</h6>
+                </div>
+                <div class="col s4 text-right">
+                    <!-- <button mat-raised-button color="primary" [disabled]="!button_detalle ? 'disabled': null" (click)="openDialog(detail)">Ver detalle</button> -->
+                </div>
+            </div>
+        
+            <div class="row" id="divTableSource">
+                <div class="col s12">
+                    <div class="mat-elevation-z8">
+                        <table mat-table [dataSource]="dataSource">
+                    
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="index">
+                            <th mat-header-cell *matHeaderCellDef> Ranking </th>
+                            <td mat-cell *matCellDef="let element; let i = index;">
+                                {{i+1}}
+                            </td>
+                        </ng-container>
+                    
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="brand">
+                            <th mat-header-cell *matHeaderCellDef> Marca </th>
+                            <td mat-cell *matCellDef="let element"> {{element.brand}} </td>
+                        </ng-container>
+                    
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="model">
+                            <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                            <td mat-cell *matCellDef="let element"> {{element.model}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="table">
+                            <th mat-header-cell *matHeaderCellDef> Mesa </th>
+                            <td mat-cell *matCellDef="let element"> {{element.table}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="table_position">
+                            <th mat-header-cell *matHeaderCellDef> Posición en mesa </th>
+                            <td mat-cell *matCellDef="let element"> {{element.table_position}} </td>
+                        </ng-container>
+                    
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="interactions_1">
+                            <th mat-header-cell *matHeaderCellDef>% de interacciones</th>
+                            <td mat-cell *matCellDef="let element"> {{element.interactions_1}} %</td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="interactions_2">
+                            <th mat-header-cell *matHeaderCellDef># de interacciones</th>
+                            <td mat-cell *matCellDef="let element"> {{element.interactions_2}} </td>
+                        </ng-container>
+                    
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    
+                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+                        <mat-paginator #paginator
+                            [length]="length"
+                            [pageIndex]="pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="[5, 10, 25, 100]"
+                            (page)="pageEvent = paginator_ranking($event)"
+                            >
+                        </mat-paginator>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row hide" id="divTableSourcePrint">
+                <div class="col s12">
+                    <div class="mat-elevation-z8">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ranking</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Mesa</th>
+                                    <th>Posición en mesa</th>
+                                    <th>% de interacciones</th>
+                                    <th># de interacciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let element of device_ranking; let i = index;">
+                                    <td>{{i+1}}</td>
+                                    <td>{{element.brand}}</td>
+                                    <td>{{element.model}}</td>
+                                    <td>{{element.table}} %</td>
+                                    <td>{{element.table_position}}</td>
+                                    <td>{{element.interactions_1}}</td>
+                                    <td>{{element.interactions_2}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+  
+</div>
+<app-spinner [spinner]="spinner"></app-spinner>

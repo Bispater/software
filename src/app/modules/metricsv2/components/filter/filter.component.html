@@ -1,0 +1,110 @@
+<div class="boxFilters">                         
+    <p class="mt-15 title-filter-to">Filtrar por:</p>  
+    <form [formGroup]="form_search">
+        <!--filter-->
+        <div class="boxFilter" *ngIf="tabCurrent != 3 ">
+   
+            <ng-container *ngIf="tabCurrent != 4">
+                <label  class="custom">Canal</label>
+                <mat-form-field appearance="fill"  class="w-100">
+                    <mat-label>Elige uno o más canales</mat-label>
+                    <mat-select formControlName="channel" 
+                    (selectionChange)="selectedValue($event)" multiple 
+                    (focus)="blockSegment()">
+                        <mat-option *ngFor="let list of filter_channel" value="{{list.id}}" >{{list.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <label  class="custom">Segmento</label>
+                <mat-form-field appearance="fill"  class="w-100">
+                    <mat-label>Elige uno o más segmentos</mat-label>
+                    <mat-select formControlName="segment" (selectionChange)="selectedSegment($event)" multiple>
+                        <mat-option *ngFor="let list of filter_segment" value="{{list.id}}" >{{list.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+            </ng-container>
+
+        </div><!--/filter  
+            <mat-option class="d-none" (onSelectionChange)="toggleAllSegments($event, false)" [disabled]="unblocked == false">Desmarcar todos</mat-option>-->
+
+        <div class="boxFilter" *ngIf="tabCurrent == 4 ;">
+            <label  class="custom">Marca</label>
+            <mat-form-field appearance="fill"  class="w-100">
+                <mat-label>Elige Marca</mat-label>
+                    <mat-select  formControlName="brand_id" (selectionChange)="selectedValueBrand($event)">
+                        <mat-option *ngFor="let list of brandsFilter" value="{{list.id}}"  >{{list.name}}</mat-option>
+                    </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="boxFilter" *ngIf="tabCurrent == 4 ;">
+            <label  class="custom">Modelo</label>
+            <mat-form-field appearance="fill"  class="w-100">
+                <mat-label>Elige un modelo</mat-label>
+                <mat-select formControlName="equipment_id" (selectionChange)="selectedModel($event)">
+                    <mat-option *ngFor="let list of filter_model_tmp" value="{{list.id}}"  >{{list.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+          <!--filter-->
+          <div class="boxFilter" *ngIf="tabCurrent == 3 ">
+            <label  class="custom">Canal</label>
+            <mat-form-field appearance="fill"  class="w-100">
+                <mat-label>Elige uno o más canales</mat-label>
+                    <mat-select  formControlName="channel" (selectionChange)="selectedValue($event)" (focus)="blockSegment()" multiple>
+                    <mat-option *ngFor="let list of filter_channel" value="{{list.id}}" >{{list.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <label  class="custom">Segmento</label>
+            <mat-form-field appearance="fill"  class="w-100">
+                <mat-label>Elige uno o más segmentos</mat-label>
+                <mat-select formControlName="segment" (selectionChange)="selectedSegment($event)" multiple >
+                    <mat-option *ngFor="let list of filter_segment" value="{{list.id}}" >{{list.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div><!--/filter-->
+
+        <!--filter-->
+        <div class="boxFilter" *ngIf="tabCurrent == 3 "><!--&& filter_subsidiary_tmp.length > 0-->
+            <label  class="custom">Tiendas</label>
+            <mat-form-field appearance="fill"  class="w-100">
+                <mat-label>Elige tiendas</mat-label>
+                <mat-select formControlName="subsidiary_id__in" (selectionChange)="selectedSubsidiary($event)"  [multiple]="false">
+                    <mat-option *ngFor="let list of filter_subsidiary_tmp" value="{{list.id}}">{{list.internal_id}} - {{list.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div><!--/filter-->
+        <div class="boxFilter rangeC">
+            <label  class="custom">Rango de fecha</label>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Ingresa un rango de fecha</mat-label>
+                <input matInput type="text"
+                [disabled]="unblocked == false"
+                style="width: 100% !important"
+                ngxDaterangepickerMd
+                formControlName="created__range"
+                [showCustomRangeLabel]="true"
+                [alwaysShowCalendars]="true"
+                [locale]="locale"
+                [ranges]="ranges"
+                [maxDate]="maxDate"
+                [linkedCalendars]="true"
+                [isInvalidDate] = "isInvalidDate"
+                [showClearButton]="false"
+                (change)="changeDate($event)"  #picker
+                class="form-control calendarCustom"
+                >
+             
+                <label for="calendar-input" class="date-range-picker-icon material-icons">event</label>
+            </mat-form-field>
+        </div>
+        <div class="boxButtons">
+            <button color="primary" class="btn-custom  mb-20" style="width: 100%;"  [disabled]="!form_search.valid" (click)="submit()">Aplicar Filtros</button>
+            <button class="w-100 d-none" mat-button (click)="resetForm()">Limpiar filtros</button>
+        </div>
+    </form>
+  
+</div> 

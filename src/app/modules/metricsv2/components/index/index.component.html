@@ -1,0 +1,17 @@
+
+<ng-container *ngIf="filter">
+  <!--tabs-->
+  <mat-tab-group 
+  class="mb-100"  id="tab-group" 
+  [selectedIndex]="selected.value"  
+  (focusChange)="focus($event)"
+  >
+    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+      <ng-template  matTabContent>
+        <template-tab [tab]="tab" [tabCurrent]="tabCurrent" [filter]="filter" (outPutSpinner)="outPutSpinner($event)"></template-tab>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group><!--/tabs-->
+</ng-container>
+<!--cargador-->
+<app-spinner class="spinner" [spinner]="spinner"></app-spinner><!--/cargador-->

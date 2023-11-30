@@ -1,0 +1,227 @@
+<app-menu *ngIf="version !== 'v4'"></app-menu>
+<div class="content-wrapper">
+	<!------ Title Bar ------>
+	<div class="title-wrapper">
+		<div class="title-box">
+			<h1><span>Listado</span> Playlist</h1>
+			<h4>Listado de playlist creadas</h4>
+		</div>
+		<!-- <div class="filter-status">
+			<span>Filtrar por estado</span>
+			<small matTooltip="Activar"  >
+				<input type="checkbox" [checked]="true" class="switch_1">
+			</small>
+		</div> -->
+		<div class="find-wrapper">
+			<span>Buscar Playlist</span>
+			<input type="text" (change)="getPlayList(0, '1', '12', $event.target.value, search_id_trade)" class="search" placeholder="Buscar">
+		</div>
+		<div class="find-wrapper">
+			<span>Buscar por Catálogo</span>
+			<select name="catalogue" (change)="getPlayList(0, '1', '12', search_name_playlist, $event.target.value)">
+				<option value="">Seleccione</option>
+				<option *ngFor="let item of catalogues" value="{{item.id}}" >{{item.name}}</option>
+			</select>
+		</div>
+		
+	</div>
+
+	<ul class="app-list">
+		<li id="li_dynamic" (click)="openTab('dynamic', 'adscreen')"><span>Playlist</span> Devicewall</li>
+		<li id="li_adscreen" (click)="openTab('adscreen', 'dynamic')"  class="off"><span>Playlist</span> Adscreen</li>
+	</ul>
+
+	<div id="dynamic">
+		<div class="playlist-wrapper">
+			<ul class="campaigns">
+				<li id="{{playlist.id}}"  *ngFor="let playlist of playlists">
+					<div class="playlist-header" >
+						<div>
+							<h1>{{playlist.name}}</h1>
+							<h3><span>Desde:</span> {{playlist.start_date}}</h3>
+							<h3><span>Hasta:</span> {{playlist.end_date}}</h3>       
+							<!-- <h3><span>Grupo:</span> Grupo ABC Din</h3> -->
+						</div>
+					</div>
+	
+					<ul class="options">
+						<li *ngIf="(!toogle || playlist.id != toogle_id)" class="circle-down">
+							<img src="assets/images/circle-down.svg" (click)="getToogle(playlist.id)">
+						</li>
+						<li *ngIf="(toogle && playlist.id == toogle_id)" class="circle-up" (click)="getToogle(playlist.id)">
+							<img src="assets/images/circle-up.svg">
+						</li>
+						<li>
+							<!-- <a href="#">{{(playlist.is_active) ? 'Desactivar' : 'Activar'}}</a> -->
+							<small matTooltip="Desactivar"  *ngIf="(playlist.is_active)">
+								<input type="checkbox" [checked]="(playlist.is_active)" value="(playlist.is_active)" (click)="changeActive(playlist.is_active, playlist.id, playlist.name)" class="switch_1">
+							</small>
+							<small matTooltip="Activar"  *ngIf="(!playlist.is_active)">
+								<input type="checkbox" [checked]="(playlist.is_active)" value="(playlist.is_active)" (click)="changeActive(playlist.is_active, playlist.id, playlist.name)" class="switch_1">
+							</small>
+						</li>
+						<li>
+							<img src="assets/images/edit.svg">
+							<a href="/playlist/{{playlist.id}}">Editar</a>
+						</li>
+						<li class="cursosr-pointer" (click)="duplicatePlaylist(playlist.id)">
+							<img src="assets/images/duplicate.svg">
+							<a>Duplicar</a>
+						</li>
+					</ul>
+					<!------ Stores Slider ------>
+					<div class="stores-wrapper example-list" *ngIf="toogle_id == playlist.id && playlistsItem">
+						<ul style="display: flex; overflow: auto;" class="detail-carousel" *ngIf="(playlistsItem)">
+							<ng-container *ngFor="let item of playlistsItem; let i = index">
+								<li id="[{{i}}, {{item.id}}, {{ (item.item_type) ? item.item_type.id : 0 }}]" style="display: inline-block; min-width: 150px;" class="carousel-cell">
+									<ng-container >
+										<div class="container-template template-xs"  >
+											<app-thumbnails [form_ads]="item"></app-thumbnails>
+										</div>
+									</ng-container>
+								  <span>{{ item.name | safe: 'remove-string' }}</span>
+								  </li>
+							</ng-container>
+						</ul>
+						<div *ngIf="(is_playlist)" class="detail-carousel"><span>¡La playlist seleccionada no contiene información asociada!</span></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="pages-wrapper" *ngIf="(count_page)">
+			<ul class="page-fast">
+				<li>{{list_view_page}} de {{count_page}}</li>
+				<li>Mostrar:</li>
+				<li (click)="getPlayList(id_playlist, '1', '12', search_name_playlist, search_id_trade)" [className]="list_page_size == '12' ? 'active' : ''" >12</li>
+				<li (click)="getPlayList(id_playlist, '1', '50', search_name_playlist, search_id_trade)" [className]="list_page_size == '50' ? 'active' : ''"  >50</li>
+				<li (click)="getPlayList(id_playlist, '1', '100', search_name_playlist, search_id_trade)" [className]="list_page_size == '100' ? 'active' : ''"  >100</li>
+				<li (click)="getPlayList(id_playlist, '1', '200', search_name_playlist, search_id_trade)" [className]="list_page_size == '200' ? 'active' : ''"  >200</li>
+			</ul>
+	
+			<ul class="page-numbers">
+				<ng-container *ngFor="let page of list_page" >
+					<li [className]="(page+1) == list_page_active ? 'active' : ''" (click)="getPlayList(id_playlist, (page+1), list_page_size, search_name_playlist, search_id_trade)" >{{page+1}}</li>
+				</ng-container>
+				<!-- <li><img src="assets/images/arrow-right.svg"></li> -->
+				
+			</ul>
+		</div>
+	</div>
+	<div id="adscreen" style="display: none;">
+		<div class="playlist-wrapper">
+			<ul class="campaigns">
+				<li id="{{playlist.id}}"  *ngFor="let playlist of adscreen">
+					<div class="playlist-header">
+						<div>
+							<h1>{{playlist.name}}</h1>
+							<h3><span>Desde:</span> {{playlist.start_date}}</h3>
+							<h3><span>Hasta:</span> {{playlist.end_date}}</h3>       
+							<!-- <h3><span>Grupo:</span> Grupo ABC Din</h3> -->
+						</div>
+					</div>
+	
+					<ul class="options">
+						<li *ngIf="(!toogle || playlist.id != toogle_id)" class="circle-down">
+							<img src="assets/images/circle-down.svg" (click)="getToogle(playlist.id)">
+						</li>
+						<li *ngIf="(toogle && playlist.id == toogle_id)" class="circle-up" (click)="getToogle(playlist.id)">
+							<img src="assets/images/circle-up.svg">
+						</li>
+						<li>
+							<!-- <a href="#">{{(playlist.is_active) ? 'Desactivar' : 'Activar'}}</a> -->
+							<small matTooltip="Desactivar"  *ngIf="(playlist.is_active)">
+								<input type="checkbox" [checked]="(playlist.is_active)" value="(playlist.is_active)" (click)="changeActive(playlist.is_active, playlist.id, playlist.name)" class="switch_1">
+							</small>
+							<small matTooltip="Activar"  *ngIf="(!playlist.is_active)">
+								<input type="checkbox" [checked]="(playlist.is_active)" value="(playlist.is_active)" (click)="changeActive(playlist.is_active, playlist.id, playlist.name)" class="switch_1">
+							</small>
+						</li>
+						<li>
+							<img src="assets/images/edit.svg">
+							<a href="/playlist/{{playlist.id}}">Editar</a>
+						</li>
+						<li class="cursosr-pointer" (click)="duplicatePlaylist(playlist.id)">
+							<img src="assets/images/duplicate.svg">
+							<a>Duplicar</a>
+						</li>
+					</ul>
+					<!------ Stores Slider ------>
+					<div class="stores-wrapper example-list" *ngIf="toogle_id == playlist.id && playlistsItem">
+						<ul style="display: flex; overflow: auto;" class="detail-carousel" *ngIf="(playlistsItem)">
+							<ng-container *ngFor="let item of playlistsItem; let i = index">
+								<li id="[{{i}}, {{item.id}}, {{ (item.item_type) ? item.item_type.id : 0 }}]" style="display: inline-block; min-width: 150px;" class="carousel-cell">
+									<ng-container >
+										<div class="container-template template-xs"  >
+											<app-thumbnails [form_ads]="item"></app-thumbnails>
+										</div>
+									</ng-container>
+								  <span>{{ item.name | safe: 'remove-string' }}</span>
+								  </li>
+							</ng-container>
+						</ul>
+						<div *ngIf="(is_playlist)" class="detail-carousel"><span>¡La playlist seleccionada no contiene información asociada!</span></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="pages-wrapper" *ngIf="(count_page_adscreen)">
+			<ul class="page-fast">
+				<li>{{list_view_page}} de {{count_page_adscreen}}</li>
+				<li>Mostrar:</li>
+				<li (click)="getPlayList(id_playlist, '1', '12', search_name_playlist, search_id_trade)" [className]="list_page_size == '12' ? 'active' : ''" >12</li>
+				<li (click)="getPlayList(id_playlist, '1', '50', search_name_playlist, search_id_trade)" [className]="list_page_size == '50' ? 'active' : ''"  >50</li>
+				<li (click)="getPlayList(id_playlist, '1', '100', search_name_playlist, search_id_trade)" [className]="list_page_size == '100' ? 'active' : ''"  >100</li>
+				<li (click)="getPlayList(id_playlist, '1', '200', search_name_playlist, search_id_trade)" [className]="list_page_size == '200' ? 'active' : ''"  >200</li>
+			</ul>
+	
+			<ul class="page-numbers">
+				<ng-container *ngFor="let page of list_page_adscreen" >
+					<li [className]="(page+1) == list_page_active ? 'active' : ''" (click)="getPlayList(id_playlist, (page+1), list_page_size, search_name_playlist, search_id_trade)" >{{page+1}}</li>
+				</ng-container>
+				<!-- <li><img src="assets/images/arrow-right.svg"></li> -->
+				
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="modal" *ngIf="modal_confirmation">
+	<div class="modal-content-2">
+		<a href="javascript:;" (click)="hideModal()" class="close-modal-btn"><img src="assets/images/close.svg"></a>
+		<div class="title-modal">
+			<h1><span>Duplicar</span> Playlist</h1>
+		</div>
+		<div class="body-modal">
+			<h1>¿Desea duplicar la playlist seleccionada?</h1>
+			<div class="playlist-wrapper body-modal-details">
+				<div class="col-buttons">
+					<button type="button" class="btn-success" (click)="saveDuplicatePlaylist()"  >Aceptar</button>
+				
+					<button type="button" class="save-campaign" (click)="hideModal()"  >Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" *ngIf="modal_active">
+	<div class="modal-content-2">
+		<a href="javascript:;" (click)="hideModalActive()" class="close-modal-btn"><img src="assets/images/close.svg"></a>
+		<div class="title-modal">
+			<h1><span>Editar</span> Playlist</h1>
+		</div>
+		<div class="body-modal">
+			<h1>¿Desea cambiar el estado de la playlist seleccionada?</h1>
+			<div class="playlist-wrapper body-modal-details">
+				<div class="col-buttons">
+					<input type="hidden" name="estado" id="estado" value="active_playlist">
+					<button type="button" class="btn-success" (click)="saveDuplicatePlaylist()"  >Aceptar</button>
+				
+					<button type="button" class="save-campaign" (click)="hideModalActive()"  >Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-spinner [spinner]="spinner"></app-spinner>

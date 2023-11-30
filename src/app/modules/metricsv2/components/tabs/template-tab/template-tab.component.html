@@ -1,0 +1,187 @@
+
+<div class="had-container mt-40">
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="col s11">
+                    <button *ngIf="chart" mat-raised-button class="right btn-download" (click)="exportAsPDF('padre')">
+                        <!--(click)="exportAsPDF('padre');-->
+                        <mat-icon>download</mat-icon>
+                        descargar informe {{tab}}
+                      
+                    </button>
+                </div>
+                <div class="col s1 text-center">
+                    <button *ngIf="table" mat-mini-fab color="primary"  style="margin-left: 15px;"
+                    matTooltip="Detalle Tiendas" (click)="getDataDeviceExcelAsync(table)" aria-label="Descargar lista">
+        
+                        <mat-icon>file_download</mat-icon>
+                       
+                    </button>
+                </div>
+            </div>
+        
+       
+        </div>  
+        
+    </div>
+    <div id="padre">
+        <div class="row bg-filter positionCalendar">
+            <div class="col s4 pr-0 pl-0">
+                <app-filter 
+                [filter]="filter" 
+                [unblocked]="unblocked"
+                [disableSegment]="disableSegment"
+                (formFilterOut)="onFormFilterOut($event)"
+                (outPutSpinner)="outPutSpinnerFunction($event)"
+                [tabCurrent]="tabCurrent" 
+                (formFilter)="formFilter($event)"
+                (outFormSearch)="outPutChannel($event)"
+                (outModelString)="outModelString2($event)"
+                (outBrandString)="outBrandString2($event)"
+                (outSubsidiaryString)="outSubsidiaryString($event)"
+                (outSegmentString)="outPutSegmentString($event)"
+                (outChannelString)="outPutChannelString($event)">
+                </app-filter>
+            </div>
+            <div class="col s8 pl-0 pr-0">
+                <div class="col s12 bg-white">
+                    <div class="p-20 d-inline-block w-100"  >
+                        <h6 *ngIf="tabCurrent == 4 && !tableWithOutModel" class="w-100 center">
+                            <mat-icon class="filter-icon">filter_alt</mat-icon>
+                            Ingresar filtros para búsqueda
+                        </h6>
+                        <div class="boxSpinner pt-120" *ngIf="spinner">
+                            <mat-spinner ></mat-spinner>
+                            <p class="mt-10">Procesando...</p>
+                        </div>
+                        <ng-container  *ngIf="spinner == false">
+                            <app-chart 
+                            [InputSubsidiary]="InputSubsidiary"
+                            [filter]="filter" 
+                            [date]="date"
+                            [chart]="chart"
+                            [tabCurrent]="tabCurrent"
+                            [arrayModelString]="arrayModelString"
+                            [arrayBrandString]="arrayBrandString"
+                            [arrayStringSubsidiary]="arrayStringSubsidiary"
+                            [arrayStringChannel]="arrayStringChannel"
+                            [arrayStringSegment]="arrayStringSegment"
+                            [totalInteracction]="totalInteracction"
+                            *ngIf="chart"></app-chart>
+                        </ng-container>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <mat-card id="mat_ranking"  class="pb-40 mb-40">
+            <div class="row">
+                <div class="col s8" *ngIf="tabCurrent != 4">
+                    <h5>Ranking de {{tab}}</h5>
+                </div>
+                <div class="col s8" *ngIf="tableWithOutModel">
+                    <h5>{{arrayBrandString}}</h5><h5>{{arrayModelString}}</h5>
+                    <h6>Interacciones totales: {{totalTable}}</h6>
+                </div>
+                <div class="col s4 text-right"></div>
+            </div>
+
+            <div class="row" id="divTableSource">
+                <div class="boxSpinner pt-120" *ngIf="spinner">
+                    <mat-spinner ></mat-spinner>
+                    <p class="mt-10">Procesando...</p>
+                </div>
+                <div class="col s12">
+                  
+                    <app-table 
+                    [tabCurrent]="tabCurrent" 
+                    [InputSubsidiary]="InputSubsidiary"
+                    [doc_count]="doc_count"	
+                    [tableWithOutModel]="tableWithOutModel"
+                    [table]="table" 
+                    (outPutTableSelect)="outPutTableSelect($event)" 
+                    (outPuttableWithOutModel)="outPuttableWithOutModel2($event)" 
+                    
+                    *ngIf="table && spinner == false"></app-table>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>
+
+<!--modal detail modal custom-->
+<ng-template #detail  let-data *ngIf="tabCurrent == 0">
+    <div class="bgModal2" style="overflow: hidden;">
+        <h1 mat-dialog-title class="align-center">
+            Detalle del equipo
+        </h1>
+        <div class="modalClose" mat-dialog-actions>
+            <button mat-button mat-dialog-close>X</button>
+        </div>
+        <div mat-dialog-content>
+            <div class="had-container">
+                <div class="row mb-0">
+                    <div class="col s5">                
+                        <div class="equipo center-align">
+                            <img *ngIf="equipmentDetail != []" src="{{equipmentDetail?.results[0]?.info.equipment_image}}">
+                        </div>  
+                    </div>
+                    <div class="col s7">
+                        <ul class="details">
+                            <li class="">
+                                <span>Marca</span>   
+                                {{data.Marca}}                           
+                            </li>
+                            <li class="">
+                                <span>Modelo</span>
+                                {{data.Modelo}}    
+                            </li>
+                            <li class="">
+                                <span>Ranking</span> 
+                                {{data.Ranking}}
+                            </li>
+                            <li class="">
+                                <span>Interacciones totales</span>
+                                {{interaccionesTotales}}
+                            </li>
+                            <li class="">
+                                <span>Fecha</span>
+                                {{date}}
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
+                <div class="table-detail row">
+                    <div class="col s12">
+                        <div class="mat-elevation-z8">
+                            <ngx-datatable  *ngIf="table.length > 0"
+                                [rows]="rows" 
+                                #table
+                                [summaryRow]="false" 
+                                [columnMode]="'force'"
+                                [columns]="columns"
+                                [headerHeight]="40"
+                                [footerHeight]="40"
+                                rowHeight="auto"
+                                [limit]="4"
+                                [rows]="rows"
+                                class="material"
+                            >
+                            </ngx-datatable>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</ng-template><!--/modal detail modal custom-->
+
+
+
+<!--<app-modal></app-modal>-->
+
+<!--<app-spinner class="spinner" [spinner]="spinner"></app-spinner> -->

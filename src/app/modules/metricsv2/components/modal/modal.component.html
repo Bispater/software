@@ -1,0 +1,53 @@
+
+<!--modal detail modal custom-->
+<ng-template #detail  let-item>
+    <div class="{{bgModal" style="overflow: hidden;">
+        <h1 mat-dialog-title class="align-center">
+            Detalle del equipo
+        </h1>
+        <div class="modalClose" mat-dialog-actions>
+            <button mat-button mat-dialog-close>X</button>
+        </div>
+        <div mat-dialog-content>
+            <div class="had-container">
+                <div class="row mb-0">
+                    <div class="col s5">                
+                        <div class="equipo center-align">
+                            <!--<img src="{{legend_image}}">-->
+                        </div>  
+                    </div>
+                    <div class="col s7">
+                        <ul class="details">
+                            <li class="">
+                                <span>Marca</span>                              
+                            </li>
+                            <li class="">
+                                <span>Modelo</span>
+                                45
+                            </li>
+                            <li class="">
+                                <span>Ranking</span> 
+                                45
+                            </li>
+                            <li class="">
+                                <span>Interacciones totales</span>
+                                34
+                            </li>
+                            <li class="">
+                                <span>Fecha</span>
+                                abril
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
+                <div class="table-detail row">
+                    <div class="col s12">
+                        <div class="mat-elevation-z8">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</ng-template><!--/modal detail modal custom-->

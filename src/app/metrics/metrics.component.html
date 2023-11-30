@@ -1,0 +1,51 @@
+<div class="headTitle">
+    <h1 class="title-state">Dashboard <b class="bColor">Foto de Éxito</b></h1>
+    <div class="logo" routerLink="/v4">
+        <img src="assets/svg/logo-entel.svg">
+    </div>
+</div>
+
+<mat-card>
+    <div class="row title">
+        <h6>EVALUACIÓN FOTO DE ÉXITO</h6>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h6>ESCOGE PDV/TIENDA</h6>
+        </div>
+        <div class="col formField">
+            <form class="example-form">
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <input type="text" 
+                         placeholder="Escoge Tienda"
+                         aria-label="Ingresa"
+                         matInput
+                         [formControl]="myControl"
+                         [matAutocomplete]="auto">
+                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" [id]="option.id">
+                      {{option.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-icon matSuffix (click)="myControl.setValue('')" (click)="clear()">clear</mat-icon>
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="showTabs">
+        <mat-tab-group>
+            <mat-tab label="EQUIPOS">        
+                <app-devices></app-devices>
+            </mat-tab>
+            <mat-tab label="ACCESORIOS">
+                <app-accessories></app-accessories>
+            </mat-tab>
+            <mat-tab label="HOGAR">
+                <app-home></app-home>
+            </mat-tab>
+            <mat-tab label="IMÁGEN">
+                <app-image></app-image>
+            </mat-tab>
+          </mat-tab-group>
+    </div> 
+</mat-card>

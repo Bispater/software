@@ -1,0 +1,173 @@
+<div id="wrap" class="had-container">
+    <header>
+        <div class="logo" routerLink="/v4">
+            <img src="assets/svg/logo-entel.svg">
+        </div>
+        <div class="menu-user" aling="right">
+            <button mat-button [matMenuTriggerFor]="menu">{{data_user && data_user.email ? data_user.email : (data_user && data_user.first_name && data_user.last_name ?  data_user.first_name+' '+data_user.last_name : '') }} <mat-icon>account_circle</mat-icon></button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="logout()" class="button-sesion">Cerrar sesión</button>
+            </mat-menu>
+        </div> 
+    </header>
+    <div class="boxNavMain">
+       
+        <div class="sideNav">
+            <a href="javascript:;" data-target="slide-out" class="sidenav-trigger">
+                <i class="material-icons">menu</i>
+            </a>
+            <ul>
+                <!-- <li class="waves-effect waves-light" *ngIf="enabled" >
+                    <a [routerLink]="['/v4/playlists']" routerLinkActive="activeLink"> 
+                        <img src="assets/svg/assignment_white_36dp.svg">
+                    </a>
+                </li>
+                <li *ngIf="enabled" class="waves-effect waves-light" >
+                    <a [routerLink]="['/v4/playlist']" routerLinkActive="activeLink">
+                        <img src="assets/svg/send_to_mobile_white_36dp.svg">
+                    </a>
+                </li>
+                <li *ngIf="enabled" class="waves-effect waves-light" >
+                    <a [routerLink]="['/v4/group']" routerLinkActive="activeLink">
+                        <img src="assets/svg/storefront_white_36dp.svg">
+                    </a>
+                </li>
+                <li *ngIf="enabled" class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/assign-playlist']" routerLinkActive="activeLink" >
+                        <img src="assets/svg/touch_app_white_36dp.svg">
+                    </a>
+                </li>
+                <li *ngIf="enabled" class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/change-price']" routerLinkActive="activeLink">
+                        <img src="assets/svg/local_offer_white_36dp.svg">
+                    </a>
+                </li>
+                <li class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/connection-status']" routerLinkActive="activeLink">
+                        <img src="assets/svg/wifi_white_36dp.svg">
+                    </a>
+                </li>
+                <li *ngIf="enabled" class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/state']" routerLinkActive="activeLink">
+                        <img src="assets/svg/tap_and_play_white_36dp.svg">
+                    </a>
+                </li>
+                <li *ngIf="enabled" class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/device-config']" routerLinkActive="activeLink">
+                        <img src="assets/svg/app_settings_alt_white_36dp.svg">
+                    </a>
+                </li>
+                <li class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/metrics']" routerLinkActive="activeLink">
+                        <img src="assets/svg/signal_cellular_alt_white_36dp.svg">
+                    </a>
+                </li> -->
+                <li class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/metrics']" routerLinkActive="activeLink">
+                        <img src="assets/svg/compass.png">
+                    </a>
+                </li>
+                <li class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/pdv']" routerLinkActive="activeLink">
+                        <img src="assets/svg/quality.png">
+                    </a>
+                </li>
+                <li class="waves-effect waves-light">
+                    <a [routerLink]="['/v4/dashboard']" routerLinkActive="activeLink">
+                        <img src="assets/svg/chart-32.png">
+                    </a>
+                </li>
+            </ul>
+            
+        </div>
+        <ul id="slide-out" class="sidenav">
+            <a class="sidenav-close">
+                <i class="material-icons">clear</i>
+            </a>
+            <!-- <li *ngIf="enabled"  class="waves-effect waves-light">
+                <a [routerLink]="['/v4/playlists']"  routerLinkActive="activeLink">
+                    <span><img src="assets/svg/assignment_white_36dp.svg" ></span>          
+                    <span>Listado Playlist</span>
+                </a>
+            </li>
+            <li *ngIf="enabled"  class="waves-effect waves-light"> 
+                <a [routerLink]="['/v4/playlist']" routerLinkActive="activeLink">
+                    <span><img src="assets/svg/send_to_mobile_white_36dp.svg"></span>
+                    <span>Crear Playlist</span>
+                </a>
+            </li>
+            <li *ngIf="enabled"  class="waves-effect waves-light">
+                <a [routerLink]="['/v4/group']" routerLinkActive="activeLink">
+                    <span><img src="assets/svg/storefront_white_36dp.svg"></span>
+                    <span>Grupos</span>
+                </a>
+            </li>
+            <li *ngIf="enabled"  class="waves-effect waves-light">
+                <a [routerLink]="['/v4/assign-playlist']" routerLinkActive="activeLink">
+                    <span><img src="assets/svg/touch_app_white_36dp.svg"></span>
+                    <span>Asignar Playlist</span>
+                </a>
+            </li>
+            <li *ngIf="enabled"  class="waves-effect waves-light">
+                <a [routerLink]="['/v4/change-price']" routerLinkActive="activeLink">
+                    <span><img src="assets/svg/local_offer_white_36dp.svg"></span>
+                    <span>Cambiar Precio</span>
+                </a>
+            </li>
+            <li class="waves-effect waves-light">
+                <a [routerLink]="['/v4/connection-status']"  routerLinkActive="activeLink" >
+                    <span><img src="assets/svg/wifi_white_36dp.svg"></span>
+                    <span>Estado de Conexión</span>
+                </a>
+            </li>
+            <li *ngIf="enabled"  class="waves-effect waves-light">
+                <a [routerLink]="['/v4/state']" routerLinkActive="activeLink" >
+                    <span><img src="assets/svg/tap_and_play_white_36dp.svg"></span>
+                    <span>Estado Equipos por Cadena</span>
+                </a>
+            </li> 
+            
+            <li *ngIf="enabled"  class="waves-effect waves-light">
+                <a [routerLink]="['/v4/device-config']" routerLinkActive="activeLink">
+                    <span><img src="assets/svg/app_settings_alt_white_36dp.svg"></span>
+                    <span>Configuración de Dispositivo</span>
+                </a>
+            </li>
+            <li class="waves-effect waves-light">
+                <a [routerLink]="['/v4/metrics']" routerLinkActive="activeLink" >
+                    <span><img src="assets/svg/signal_cellular_alt_white_36dp.svg"></span>
+                    <span>Métricas</span>
+                </a>
+            </li>  -->
+            <li class="waves-effect waves-light">
+                <a [routerLink]="['/v4/pdv']" routerLinkActive="activeLink">
+                    <span><img class="pdv-icon-adjust" src="assets/svg/compass.png"></span>
+                    <span>Métricas Generales</span>
+                </a>
+            </li>
+            <li class="waves-effect waves-light">
+                <a [routerLink]="['/v4/dashboard']" routerLinkActive="activeLink">
+                    <span><img class="pdv-icon-adjust" src="assets/svg/chart-32.png"></span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="waves-effect waves-light">
+                <a [routerLink]="['/v4/pdv']" routerLinkActive="activeLink">
+                    <span><img class="pdv-icon-adjust" src="assets/svg/quality.png"></span>
+                    <span>Punto de Venta</span>
+                </a>
+            </li>
+
+
+        </ul>
+        <!-- -->
+        <main class="mw-100">
+            <div class="container  mw-100 w-95">
+                <div class="row">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+

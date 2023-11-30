@@ -1,0 +1,37 @@
+.custom-dropzone {
+    min-height: 450px;
+    min-width: 450px;
+}
+
+p {
+    padding: 10px;
+}
+
+ngx-dropzone-image-preview {
+    border: 1px solid rgb(47, 44, 44);
+    ngx-dropzone-label {
+        background-color: rgba(25, 133, 228, 0.362);
+        color: black;
+        padding: 10px;
+        border-radius: 5px;
+    }
+}
+
+.qualify-btn {
+    background-color: #005cff;
+    border: none;
+    height: auto;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.qualify-btn:hover {
+    box-shadow: 0 6px 6px 0 rgba(0,0,0,0.24), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }

@@ -1,0 +1,51 @@
+.headTitle {
+    width: 1380px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: -20px;
+    img {
+        height: 50px;
+    }
+}
+
+h1 {
+    margin-left: -124px;
+}
+
+mat-card {
+    margin-left: -120px;
+    width: 1500px;
+    border: 3px solid #ffffff;
+    background: #f7f9fa;
+    // background: rgb(238, 238, 238);
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active  {
+    background-color: rgb(28, 87, 214);
+    .mat-tab-label-content {
+        color:rgb(238, 238, 238) !important;
+    }
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    h6 {
+        color:rgb(143, 143, 136);
+    }
+}
+
+.formField {
+    .mat-form-field{
+        width: 325%;
+    }
+}
+
+mat-icon {
+    cursor: pointer;
+}

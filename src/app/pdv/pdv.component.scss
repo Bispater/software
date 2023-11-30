@@ -1,0 +1,250 @@
+.headTitle {
+    width: 1380px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: -20px;
+    img {
+        height: 50px;
+    }
+}
+
+h1 {
+    margin-left: -124px;
+}
+
+mat-card {
+    margin-left: -120px;
+    width: 1500px;
+    border: 3px solid #ffffff;
+    background: #f7f9fa;
+    // background: rgb(238, 238, 238);
+    margin-top: 40px;
+    margin-bottom: 40px
+
+}
+
+.first-row {
+    display: flex; 
+    align-items:center;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    .name-content {
+        margin-left: -5px;
+    }
+    .store-select {
+        margin-top: 15px;
+        width: auto;
+
+        mat-icon {
+            cursor : pointer;
+        }
+    }
+}
+
+.div-search {
+    float: left;
+    padding: 9px 0 9px 30px;
+    margin: 0;
+    background: #ffffff url(../../assets/images/search.svg) no-repeat 5%;
+    background-size: 12px;
+    height: auto;
+    border-radius: 15px;
+    margin-right: 20px;
+    width: 240px;
+    box-shadow: 0 0 10px #ccc;
+
+    .inputShadow {
+        box-shadow: none;
+        &:focus {
+            outline: none;
+            /* additional styles to remove box-shadow on focus */
+            box-shadow: none;
+            border-color: none;
+        }
+    }
+}
+
+.div-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* add any value you want for the gap */
+    float: right;
+    height: 100%;
+    button {
+        margin-left: 5px;;
+    }
+    mat-icon {
+        color: #015afb;
+        font-size: 35px;
+        margin-right: 10px;
+    }
+    mat-icon.rotated {
+        // transform: rotate(-45deg);
+    }
+}
+
+.cardNotification {
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    justify-content: left;
+    border: 1px solid #b8b8b840;
+    border-radius: 5px;
+}
+
+.name-content {
+    width: 50%;
+    float: left;
+    height: 100%;
+    h4 {
+        color:rgb(28, 87, 214) !important;
+        img {
+            width: 25px;
+            margin-right: 5px;
+        }
+    }
+
+}
+.search-icon-content {
+    justify-content: flex-end;
+    cursor: pointer;
+    display: flex;
+    width: 50%;
+    float: right;
+    height: 100%;
+    .adjust-icon {
+        width: 25px!important; 
+        margin-bottom: 4px;
+    }
+}
+  
+.second-row {
+    display: flex; 
+    align-items:center;
+    .col-left {
+        align-self: start;
+        margin: 10px;
+        width:70%;
+        .card {
+            padding-left: 20px;
+            padding-right: 10px;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            height: auto;
+        }
+    }
+    .col-right {
+        align-self: start;
+        margin: 10px;
+        width:30%;
+        .card {
+            padding-left: 20px;
+            padding-right: 10px;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            height: auto;
+        }
+    }
+    h6 {
+        padding-bottom: 15px;
+    }
+    p {
+        color:#b8b8b8;
+    }
+}
+
+mat-tab-group {
+    .tab-adjust {
+        margin-left: 15px;
+        margin-bottom: 20px;
+    }
+}
+
+//  ALIGN ITEMS TO THE CENTER OF THE COLUMN IN A MAT TABLE :
+
+
+.col-left {
+    .mat-table {
+        border-collapse: separate!important;
+        //border-spacing: 0px 15px!important;
+    }
+}
+
+.col-left {
+    th.mat-column-device, th.mat-column-home, th.mat-column-accesories, th.mat-column-image {
+        text-align: center;
+        justify-content: center;
+    }
+    th.mat-column-mark {
+        text-align: center;
+        justify-content: center;
+        padding-right: 5px;
+        width: 80px;
+        border-left: 10px solid #ffffff;
+        border-bottom-style: none;
+    }
+    
+    td.mat-column-device, td.mat-column-home, td.mat-column-accesories, td.mat-column-image{
+        text-align: center;
+        justify-content: center;
+        border: 1px solid #ffffff;
+        width: 80px;
+    }
+
+    td.mat-column-mark {
+        text-align: center;
+        font-weight: bold;
+        justify-content: center;
+        border: 1px solid #ffffff;
+        padding-right: 0px;
+        width: 80px;
+        border-left: 10px solid #ffffff;
+    }
+    
+}
+
+.col-right {
+    th.mat-column-devices, th.mat-column-home, th.mat-column-accesories, th.mat-column-image {
+        text-align: center;
+        justify-content: center;
+    }
+    th.mat-header-cell:last-of-type {
+        padding-right: 0px;
+    }
+    td.mat-column-devices, td.mat-column-home, td.mat-column-accesories, td.mat-column-image, td.mat-column-scale {
+        text-align: center;
+        justify-content: center;
+        border: 1px solid #ffffff;
+        width: 80px;
+        padding: 0 !important;
+    }
+}
+
+.col-left {
+    .no-background {
+        height: 600px;
+        max-width: 100%;
+        overflow: auto;
+        margin-top: 5px;
+        margin-right: 15px;
+    }
+}
+
+.col-right {
+    .no-background {
+        overflow: auto;
+        margin-top: 5px;
+        margin-right: 15px;
+    }
+}
+
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active  {
+    background-color: rgb(28, 87, 214);
+    .mat-tab-label-content {
+        color:rgb(238, 238, 238) !important;
+    }
+}
+
+

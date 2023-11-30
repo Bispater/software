@@ -1,0 +1,222 @@
+.initial {
+    margin-top: 60px;
+
+    .col-1 {
+        width: 50%;
+        display: flex;
+        margin-left: -70px;
+    }
+
+    .col-2 {
+        width: 50%;
+    }
+}
+
+.card-adjust {
+    height: 45px; 
+    padding-left: 10px; 
+    padding-right: 10px;
+}
+
+
+.row {
+    //display: flex;
+    //mat progress bar background-color 
+    ::ng-deep .mat-progress-bar-fill::after {
+        background-color: #005cff;
+    }
+}
+  
+.col-1 {
+    width: 50%;
+    height: 30px;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    flex-direction: row;
+    ::ng-deep mat-form-field {
+        span {
+            margin: 0px;
+        }
+    }
+    h6 {
+        margin-left: 30px;
+    }
+    .mat-progress-bar {
+        width: 200px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 3px;
+        margin-left: 30px;
+    }
+  }
+  
+.col-2 {
+    width: 50%;
+    height: 30px;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    flex-direction: row;
+    h6 {
+        margin-left: 30px;
+    }
+
+    .mat-progress-bar {
+        width: 220px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 3px;
+        margin-left: 30px;
+    }
+
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 150px;
+        width: 100%;
+      }
+      
+      .point-container {
+        margin-left: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .point {
+        // margin-left: 20px;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        margin-bottom: 10px;
+      }
+      
+      .red {
+        background-color: red;
+      }
+      
+      .green {
+        background-color: green;
+      }
+      
+      .black-color {
+        background-color: rgb(180, 180, 188);
+      }
+      
+      .yellow {
+        background-color: yellow;
+      }
+      
+      .text {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      
+    
+}
+
+.item {
+    width: 33.33%; 
+}
+
+/* RESUME CARD */
+
+.resume-card-adjust {
+    margin-top: 10px;
+    height: 200px;
+}
+
+.resume-col-1 {
+    width: 50%;
+    height: 30px;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    flex-direction: row;
+    h6 {
+        margin-left: 30px;
+    }
+    .mat-progress-bar {
+        width: 200px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 3px;
+        margin-left: 30px;
+    }
+}
+
+.resume-col-2 {
+    width: 50%;
+    height: 30px;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    flex-direction: row;
+    h6 {
+        margin-left: 30px;
+    }
+
+    .mat-progress-bar {
+        width: 220px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 3px;
+        margin-left: 30px;
+    }
+}
+
+// .resume-col-2 {
+//     width: 50%;
+//     height: 30px;
+//     //display: flex;
+//     margin-top: 5px;
+//     align-items: center;
+//     flex-direction: row;
+//     h6 {
+//         margin-left: 30px;
+//     }
+
+//     .mat-progress-bar {
+//         width: 220px;
+//         height: 10px;
+//         border-radius: 10px;
+//         margin-top: 3px;
+//         margin-left: 30px;
+//     }
+// }
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-left: 10px; 
+    padding-right: 10px;
+
+    .mat-progress-bar {
+        width: 220px;
+        height: 10px;
+        border-radius: 10px;
+        margin-top: 13px;
+        margin-left: 30px;
+    }
+    ::ng-deep .mat-progress-bar-fill::after {
+        background-color: #005cff;
+    }
+  }
+
+#myInput {
+    background-image: url('../../../../assets/images/search.svg'); /* Add a search icon to input */
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    background-color: #ffffff;
+    border-radius: 15px;
+    width: 100%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    margin-bottom: 12px; /* Add some space below the input */
+  }

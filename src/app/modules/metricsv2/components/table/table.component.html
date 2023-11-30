@@ -1,0 +1,34 @@
+<ng-container *ngIf="tabCurrent == 0; else dos">
+    <ngx-datatable *ngIf="tableMap.length > 0"
+        (activate)="selectItem($event)"
+        [rows]="rows" 
+        #table
+        [summaryRow]="false" 
+        [columnMode]="'force'"
+        [columns]="columns"
+        [headerHeight]="40"
+        [footerHeight]="40"
+        rowHeight="auto"
+        [limit]="10"
+        [rows]="rows"
+        class="material iconClick"
+        >
+    </ngx-datatable>
+</ng-container>
+
+<ng-template #dos>
+    <ngx-datatable  *ngIf="tableMap.length > 0"
+        [rows]="rows" 
+        #table
+        [summaryRow]="false" 
+        [columnMode]="'force'"
+        [columns]="columns"
+        [headerHeight]="40"
+        [footerHeight]="40"
+        rowHeight="auto"
+        [limit]="10"
+        [rows]="rows"
+        class="material"
+        >
+    </ngx-datatable>
+</ng-template>
